@@ -2,7 +2,7 @@ import pygame
 import random
 from Bullet import Bullet
 from StartScreen import StartScreen
-
+from GameOverScreen import GameOverScreen
 # Initialize Pygame
 pygame.init()
 
@@ -42,6 +42,8 @@ def draw_text(text, font, surface, x, y):
     text_rect = text_obj.get_rect()
     text_rect.topleft = (x, y)
     surface.blit(text_obj, text_rect)
+
+spaceship_image_path = 'logo.jpg'
 
 start_screen = StartScreen(screen, 72)
 menu_selection = start_screen.run()
@@ -97,6 +99,8 @@ while running:
     # Check for collisions between spaceship and bullets
     for bullet in bullet_group:
         if spaceship.colliderect(bullet.rect):
+            game_over_screen = GameOverScreen(screen, start_font, score)
+            game_over_screen.run()
             running = False
 
     # Rendering
