@@ -43,11 +43,22 @@ def draw_text(text, font, surface, x, y):
     text_rect.topleft = (x, y)
     surface.blit(text_obj, text_rect)
 
-start_screen = StartScreen(screen, start_font)
+start_screen = StartScreen(screen, 72)
+menu_selection = start_screen.run()
+
 if not start_screen.run():
     running = False
 else:
     running = True
+
+"""
+if menu_selection == 'Start Game':
+    elif menu_selection == 'Settings':
+    elif menu_selection == 'Leaderboards':
+    elif menu_selection == 'Quit':
+        running = False
+"""
+
 
 # Main game loop
 running = True
@@ -86,7 +97,7 @@ while running:
     # Check for collisions between spaceship and bullets
     for bullet in bullet_group:
         if spaceship.colliderect(bullet.rect):
-            running = False  # End game
+            running = False
 
     # Rendering
     screen.fill(BLACK)

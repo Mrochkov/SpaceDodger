@@ -12,7 +12,7 @@ class Bullet(pygame.sprite.Sprite):
         self.screen_height = screen_height
 
     def update(self):
-        self.rect.move_ip(0, 5)  # Bullet speed
+        self.rect.move_ip(0, 5)
 
     def is_off_screen(self):
         return self.rect.top > self.screen_height
