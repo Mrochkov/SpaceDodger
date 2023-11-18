@@ -1,6 +1,7 @@
 import pygame
 import random
 from Bullet import Bullet
+from StartScreen import StartScreen
 
 # Initialize Pygame
 pygame.init()
@@ -19,10 +20,11 @@ BLACK = (0, 0, 0)
 
 # Font setup
 score_font = pygame.font.Font(None, 36)
+start_font = pygame.font.Font(None, 72)
 
 # Spaceship settings
 spaceship_speed = 5
-spaceship_img = pygame.Surface((40, 40))  # Replace with your spaceship image
+spaceship_img = pygame.Surface((40, 40))
 spaceship_img.fill(WHITE)
 spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50, 40, 40)
 
@@ -40,6 +42,12 @@ def draw_text(text, font, surface, x, y):
     text_rect = text_obj.get_rect()
     text_rect.topleft = (x, y)
     surface.blit(text_obj, text_rect)
+
+start_screen = StartScreen(screen, start_font)
+if not start_screen.run():
+    running = False
+else:
+    running = True
 
 # Main game loop
 running = True
