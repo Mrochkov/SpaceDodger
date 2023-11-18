@@ -1,13 +1,9 @@
 import pygame
 import random
-
-# Initialize Pygame
 from Bullet import Bullet
 
+# Initialize Pygame
 pygame.init()
-
-score = 0
-score_font = pygame.font.SysFont("Arial", 24)  # Create a font object
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -21,7 +17,8 @@ pygame.display.set_caption('Space Dodger')
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-score_font = pygame.font.Font(None, 36)  # Create a font object with a size of 36
+# Font setup
+score_font = pygame.font.Font(None, 36)
 
 # Spaceship settings
 spaceship_speed = 5
@@ -35,6 +32,9 @@ bullet_group = pygame.sprite.Group()
 # Clock to control frame rate
 clock = pygame.time.Clock()
 
+# Score initialization
+score = 0
+
 def draw_text(text, font, surface, x, y):
     text_obj = font.render(text, True, WHITE)
     text_rect = text_obj.get_rect()
@@ -43,6 +43,7 @@ def draw_text(text, font, surface, x, y):
 
 # Main game loop
 running = True
+
 while running:
     # Event handling
     for event in pygame.event.get():
@@ -56,21 +57,23 @@ while running:
     if keys[pygame.K_RIGHT] and spaceship.right < SCREEN_WIDTH:
         spaceship.x += spaceship_speed
 
-    bullet_group.update()  # This calls the update method of all Bullet instances
+    # Check for bullets that have passed the spaceship
+    for bullet in list(bullet_group):
+        if bullet.is_off_screen():
+            score += 1
+            bullet_group.remove(bullet)
 
-    # Generate bullets
+    # Generate new bullets
     if random.randint(1, 50) == 1:
         new_bullet = Bullet(random.randint(0, SCREEN_WIDTH), 0, SCREEN_HEIGHT)
         bullet_group.add(new_bullet)
 
-    for bullet in list(bullet_group):
-        if bullet.is_off_screen():
-            print("Bullet off screen, incrementing score")  # Debug print
-            score += 1
-            bullet_group.remove(bullet)
-
-            # Update bullet positions
+    # Update and generate bullets
     bullet_group.update()
+
+    if random.randint(1, 50) == 1:
+        new_bullet = Bullet(random.randint(0, SCREEN_WIDTH), 0, SCREEN_HEIGHT)
+        bullet_group.add(new_bullet)
 
     # Check for collisions between spaceship and bullets
     for bullet in bullet_group:
@@ -82,14 +85,11 @@ while running:
     screen.blit(spaceship_img, spaceship)
     for bullet in bullet_group:
         screen.blit(bullet.surf, bullet.rect)
-        score_text = score_font.render(f'Score: {score}', True, WHITE)
-        screen.blit(score_text, (10, 10))
+
+    draw_text(f'Score: {score}', score_font, screen, 10, 10)
 
     pygame.display.flip()
 
-    # Cap the frame rate
     clock.tick(60)
-
-    draw_text(f'Score: {score}', score_font, screen, 10, 10)  # Draw the score at the top-left corner
 
 pygame.quit()
