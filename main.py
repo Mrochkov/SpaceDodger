@@ -10,6 +10,7 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
+
 # Set up the display
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Space Dodger')
@@ -17,6 +18,12 @@ pygame.display.set_caption('Space Dodger')
 # Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+YELLOW = (252, 186, 3)
+GREEN = (48, 242, 0)
+BLUE = (32, 3, 252)
+RED = (252, 3, 3)
+PURPLE = (125, 0, 163)
+ORANGE = (255, 98, 0)
 
 # Font setup
 score_font = pygame.font.Font(None, 36)
@@ -43,7 +50,7 @@ def draw_text(text, font, surface, x, y):
     text_rect.topleft = (x, y)
     surface.blit(text_obj, text_rect)
 
-spaceship_image_path = 'logo.jpg'
+spaceship_image_path = 'logo.png'
 
 start_screen = StartScreen(screen, 72)
 menu_selection = start_screen.run()

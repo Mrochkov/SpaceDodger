@@ -6,10 +6,16 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HIGHLIGHT = (255, 255, 0)
 GREY = (104, 104, 104)
+YELLOW = (252, 186, 3)
+BLUE = (32, 3, 252)
+RED = (252, 3, 3)
+GREEN = (48, 242, 0)
+PURPLE = (125, 0, 163)
+ORANGE = (255, 98, 0)
 
 
 class StartScreen:
-    def __init__(self, screen, font_size, spaceship_image_path='logo.jpg'):
+    def __init__(self, screen, font_size, spaceship_image_path='logo.png'):
         self.screen = screen
         self.font_size = font_size
         self.font = pygame.font.Font(None, font_size)
