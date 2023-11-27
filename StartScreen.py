@@ -2,6 +2,8 @@ import pygame
 import math
 
 # Define colors
+from SettingsScreen import SettingsScreen
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HIGHLIGHT = (255, 255, 0)
@@ -32,11 +34,9 @@ class StartScreen:
     def draw_menu(self):
         self.screen.fill(BLACK)
 
-        # Blit the spaceship image at the new position
         self.screen.blit(self.spaceship_image, self.spaceship_rect)
         menu_start_y = 300
         for index, option in enumerate(self.menu_options):
-            # Animate the selected option with a sine wave for smooth size changes
             if index == self.selected:
                 animation_scale = math.sin(self.menu_animation_time) * 20
                 highlighted_font = pygame.font.Font(None, int(self.font_size + animation_scale))
@@ -44,7 +44,7 @@ class StartScreen:
             else:
                 text = self.font.render(option, True, GREY)
 
-            # Determine the vertical position for each menu item
+            # vertical position for each menu item
             text_rect = text.get_rect(center=(self.screen.get_width() // 2, menu_start_y + index * 60))
             self.screen.blit(text, text_rect)
 
@@ -56,7 +56,6 @@ class StartScreen:
         while self.running:
             dt = self.clock.tick(60) / 1000.0
 
-            # Update the animation time with the delta to make animation frame rate independent
             self.menu_animation_time += dt * 4
 
             for event in pygame.event.get():
@@ -69,8 +68,13 @@ class StartScreen:
                     elif event.key == pygame.K_DOWN:
                         self.selected = (self.selected + 1) % len(self.menu_options)
                     elif event.key == pygame.K_RETURN:
-                        self.running = False
-                        return self.menu_options[self.selected]
+                        if self.menu_options[self.selected] == 'Settings':
+                            settings_screen = SettingsScreen(self.screen, self.font)
+                            settings_screen.run()
+                            self.running = True
+                        else:
+                            self.running = False
+                            return self.menu_options[self.selected]
 
             self.draw_menu()
 
