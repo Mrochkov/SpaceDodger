@@ -34,21 +34,25 @@ class StartScreen:
     def draw_menu(self):
         self.screen.fill(BLACK)
 
+        # Blit the spaceship image at the new position
         self.screen.blit(self.spaceship_image, self.spaceship_rect)
         menu_start_y = 300
+
         for index, option in enumerate(self.menu_options):
             if index == self.selected:
-                animation_scale = math.sin(self.menu_animation_time) * 20
-                highlighted_font = pygame.font.Font(None, int(self.font_size + animation_scale))
-                text = highlighted_font.render(option, True, HIGHLIGHT)
+                animation_scale = math.sin(self.menu_animation_time) * 10
+                animated_font_size = int(self.font_size + animation_scale)  # Ensure this is an integer
+                animated_font = pygame.font.Font(None, animated_font_size)  # Correctly create a new Font object
+                text = animated_font.render(option, True, HIGHLIGHT)
             else:
                 text = self.font.render(option, True, GREY)
 
-            # vertical position for each menu item
             text_rect = text.get_rect(center=(self.screen.get_width() // 2, menu_start_y + index * 60))
             self.screen.blit(text, text_rect)
 
         pygame.display.flip()
+
+
 
     def run(self):
         last_time = pygame.time.get_ticks()

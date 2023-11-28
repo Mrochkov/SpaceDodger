@@ -24,7 +24,7 @@ class GameOverScreen:
         self.screen.blit(score_text, score_rect)
         pygame.display.flip()
 
-    def run(self):
+    def run(self, score):
         self.draw()
         while self.running:
             for event in pygame.event.get():

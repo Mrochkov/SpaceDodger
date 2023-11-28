@@ -3,17 +3,7 @@ import random
 from Bullet import Bullet
 from StartScreen import StartScreen
 from GameOverScreen import GameOverScreen
-# Initialize Pygame
-pygame.init()
-
-# Screen dimensions
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-
-
-# Set up the display
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Space Dodger')
+from SettingsScreen import SettingsScreen
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -25,101 +15,113 @@ RED = (252, 3, 3)
 PURPLE = (125, 0, 163)
 ORANGE = (255, 98, 0)
 
-# Font setup
-score_font = pygame.font.Font(None, 36)
-start_font = pygame.font.Font(None, 72)
+# Screen dimensions
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 
-# Spaceship settings
-spaceship_speed = 5
-spaceship_img = pygame.Surface((40, 40))
-spaceship_img.fill(WHITE)
-spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50, 40, 40)
+class Main:
+    def __init__(self, score):
+        pygame.init()
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_caption('Space Dodger')
+        self.score = 0
+        self.clock = pygame.time.Clock()
+        self.score_font = pygame.font.Font(None, 36)
+        self.start_font = pygame.font.Font(None, 72)
 
-# Bullet settings
-bullet_group = pygame.sprite.Group()
+        self.start_screen = StartScreen(self.screen, 72)
+        self.settings_screen = SettingsScreen(self.screen, 72)
+        self.game_over_screen = GameOverScreen(self.screen, self.start_font, score)
 
-# Clock to control frame rate
-clock = pygame.time.Clock()
+        self.spaceship_speed = 5
+        self.bullet_generation_interval = 1000  # milliseconds
+        self.difficulty = 'Normal'
+        self.game_speed = 'Normal'
 
-# Score initialization
-score = 0
+        self.spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 50, 30)
+        self.spaceship_img = pygame.image.load('spaceship.png').convert_alpha()
+        self.bullet_group = pygame.sprite.Group()
 
-def draw_text(text, font, surface, x, y):
-    text_obj = font.render(text, True, WHITE)
-    text_rect = text_obj.get_rect()
-    text_rect.topleft = (x, y)
-    surface.blit(text_obj, text_rect)
+        self.running = True
+        self.score = 0
 
-spaceship_image_path = 'logo.png'
+    def run(self):
+        menu_selection = self.start_screen.run()
 
-start_screen = StartScreen(screen, 72)
-menu_selection = start_screen.run()
+        while self.running:
+            if menu_selection == 'Start Game':
+                self.game_loop()
+                menu_selection = self.start_screen.run()
+            elif menu_selection == 'Settings':
+                self.settings_screen.run()
+                menu_selection = self.start_screen.run()
+            elif menu_selection == 'Quit':
+                self.running = False
 
-if not start_screen.run():
-    running = False
-else:
-    running = True
+        pygame.quit()
 
-"""
-if menu_selection == 'Start Game':
-    elif menu_selection == 'Settings':
-    elif menu_selection == 'Leaderboards':
-    elif menu_selection == 'Quit':
-        running = False
-"""
+    def game_loop(self):
+        running = True
+        last_bullet_time = pygame.time.get_ticks()
 
+        while running:
+            # Event handling
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
-# Main game loop
-running = True
+            # Game logic
+            self.handle_player_input()
+            self.handle_bullet_generation(last_bullet_time)
 
-while running:
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+            # Update and draw everything
+            self.update_screen()
 
-    # Game logic
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and spaceship.left > 0:
-        spaceship.x -= spaceship_speed
-    if keys[pygame.K_RIGHT] and spaceship.right < SCREEN_WIDTH:
-        spaceship.x += spaceship_speed
+            # Collision detection
+            if self.check_collisions():
+                self.game_over_screen.run()
+                running = False
 
-    # Check for bullets that have passed the spaceship
-    for bullet in list(bullet_group):
-        if bullet.is_off_screen():
-            score += 1
-            bullet_group.remove(bullet)
+            self.clock.tick(60)
 
-    # Generate new bullets
-    if random.randint(1, 50) == 1:
-        new_bullet = Bullet(random.randint(0, SCREEN_WIDTH), 0, SCREEN_HEIGHT)
-        bullet_group.add(new_bullet)
+    def handle_player_input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.spaceship.x -= self.spaceship_speed
+        if keys[pygame.K_RIGHT]:
+            self.spaceship.x += self.spaceship_speed
 
-    # Update and generate bullets
-    bullet_group.update()
+        self.spaceship.x = max(0, min(self.spaceship.x, SCREEN_WIDTH - self.spaceship.width))
 
-    if random.randint(1, 50) == 1:
-        new_bullet = Bullet(random.randint(0, SCREEN_WIDTH), 0, SCREEN_HEIGHT)
-        bullet_group.add(new_bullet)
+    def handle_bullet_generation(self, last_bullet_time):
+        time_now = pygame.time.get_ticks()
+        if time_now - last_bullet_time > self.bullet_generation_interval:
+            bullet_x = random.randint(0, SCREEN_WIDTH - 20)
+            new_bullet = Bullet(bullet_x, 0, 20, 10, self.bullet_speed)
+            self.bullet_group.add(new_bullet)
+            last_bullet_time = time_now
 
-    # Check for collisions between spaceship and bullets
-    for bullet in bullet_group:
-        if spaceship.colliderect(bullet.rect):
-            game_over_screen = GameOverScreen(screen, start_font, score)
-            game_over_screen.run()
-            running = False
+    def update_screen(self):
+        self.screen.fill(BLACK)
+        for bullet in self.bullet_group:
+            bullet.update()
+            self.screen.blit(bullet.image, bullet.rect)
 
-    # Rendering
-    screen.fill(BLACK)
-    screen.blit(spaceship_img, spaceship)
-    for bullet in bullet_group:
-        screen.blit(bullet.surf, bullet.rect)
+        self.screen.blit(self.spaceship_img, self.spaceship)
+        self.draw_text(f'Score: {self.score}', self.score_font, 10, 10)
+        pygame.display.flip()
 
-    draw_text(f'Score: {score}', score_font, screen, 10, 10)
+    def check_collisions(self):
+        for bullet in self.bullet_group:
+            if self.spaceship.colliderect(bullet.rect):
+                # Pass the current score to the GameOverScreen instance
+                self.game_over_screen.run(self.score)
+                running = False
 
-    pygame.display.flip()
+    def draw_text(self, text, font, x, y):
+        text_surface = font.render(text, True, WHITE)
+        self.screen.blit(text_surface, (x, y))
 
-    clock.tick(60)
-
-pygame.quit()
+if __name__ == '__main__':
+    game = Main()
+    game.run()
