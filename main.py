@@ -39,7 +39,7 @@ class Main:
         self.game_speed = 'Normal'
 
         self.spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 50, 30)
-        self.spaceship_img = pygame.image.load('spaceship.png').convert_alpha()
+        """self.spaceship_img = pygame.image.load('spaceship.png').convert_alpha()"""
         self.bullet_group = pygame.sprite.Group()
 
         self.running = True
@@ -107,7 +107,7 @@ class Main:
             bullet.update()
             self.screen.blit(bullet.image, bullet.rect)
 
-        self.screen.blit(self.spaceship_img, self.spaceship)
+        """self.screen.blit(self.spaceship_img, self.spaceship)"""
         self.draw_text(f'Score: {self.score}', self.score_font, 10, 10)
         pygame.display.flip()
 
@@ -123,5 +123,5 @@ class Main:
         self.screen.blit(text_surface, (x, y))
 
 if __name__ == '__main__':
-    game = Main()
+    game = Main(score=0)
     game.run()

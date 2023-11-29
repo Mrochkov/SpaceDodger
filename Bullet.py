@@ -11,6 +11,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect(center=(x, y))
         self.screen_height = screen_height
 
+
     def update(self):
         self.rect.move_ip(0, 5)
 
