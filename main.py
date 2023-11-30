@@ -114,7 +114,6 @@ class Main:
     def check_collisions(self):
         for bullet in self.bullet_group:
             if self.spaceship.colliderect(bullet.rect):
-                # Pass the current score to the GameOverScreen instance
                 self.game_over_screen.run(self.score)
                 running = False
 
