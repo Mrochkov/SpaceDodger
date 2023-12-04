@@ -2,22 +2,20 @@ import pygame
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
+
 class GameOverScreen:
-    def __init__(self, screen, font, score):
+    def __init__(self, screen, font):
         self.screen = screen
         self.font = font
-        self.score = score
         self.running = True
         self.clock = pygame.time.Clock()
 
-    def draw(self):
+    def draw(self, score):
         self.screen.fill(BLACK)
         game_over_text = self.font.render('GAME OVER', True, WHITE)
-        score_text = self.font.render(f'Final Score: {self.score}', True, WHITE)
+        score_text = self.font.render(f'Final Score: {score}', True, WHITE)
         game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
         score_rect = score_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 10))
         self.screen.blit(game_over_text, game_over_rect)
@@ -25,7 +23,7 @@ class GameOverScreen:
         pygame.display.flip()
 
     def run(self, score):
-        self.draw()
+        self.draw(score)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -34,5 +32,4 @@ class GameOverScreen:
                     if event.key == pygame.K_RETURN:
                         self.running = False
             self.clock.tick(60)
-
         return 'Restart'
