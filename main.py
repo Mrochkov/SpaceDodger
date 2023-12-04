@@ -16,6 +16,7 @@ BLUE = (32, 3, 252)
 RED = (252, 3, 3)
 PURPLE = (125, 0, 163)
 ORANGE = (255, 98, 0)
+GREY= (128, 128, 128)
 
 # Screen dimensions
 SCREEN_WIDTH = 800
@@ -35,13 +36,13 @@ class Main:
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
 
         self.settings = {
-            'difficulty': 'Normal',  # Default settings
+            'difficulty': 'Normal',
             'game_speed': 'Normal',
         }
 
         self.spaceship_speed = 5
         self.bullet_speed = 10
-        self.bullet_generation_interval = 1000  # milliseconds
+        self.bullet_generation_interval = 1000
         self.last_bullet_time = 0
 
         self.spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 50, 30)
@@ -49,6 +50,32 @@ class Main:
 
         self.running = True
         self.score = 0
+
+    def show_loading_screen(self):
+        loading_bar_width_max = 400
+        loading_bar_height = 20
+        loading_bar_x = (SCREEN_WIDTH - loading_bar_width_max) // 2
+        loading_bar_y = SCREEN_HEIGHT // 2 + 50
+
+        for i in range(101):
+            self.screen.fill(BLACK)
+
+            # Draw loading text
+            loading_text = self.score_font.render('Loading...', True, WHITE)
+            text_rect = loading_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+            self.screen.blit(loading_text, text_rect)
+
+            # Draw loading bar background
+            pygame.draw.rect(self.screen, GREY,
+                             [loading_bar_x, loading_bar_y, loading_bar_width_max, loading_bar_height])
+
+            # Draw loading bar progress
+            current_bar_width = (loading_bar_width_max * i) // 100
+            pygame.draw.rect(self.screen, GREEN, [loading_bar_x, loading_bar_y, current_bar_width, loading_bar_height])
+
+            pygame.display.flip()
+            pygame.time.wait(20)
+
 
     def save_settings(settings):
         with open('settings.json', 'w') as f:
@@ -59,20 +86,21 @@ class Main:
             with open('settings.json', 'r') as f:
                 return json.load(f)
         except FileNotFoundError:
-            return {'difficulty': 'Normal', 'game_speed': 'Normal'}  # Default settings
+            return {'difficulty': 'Normal', 'game_speed': 'Normal'}
 
     def run(self):
+        self.show_loading_screen()
         menu_selection = self.start_screen.run()
 
         while self.running:
             if menu_selection == 'Start Game':
-                self.apply_settings()  # Apply settings before starting the game
+                self.apply_settings()
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
                 updated_settings = self.settings_screen.run()
                 if updated_settings:
-                    self.settings = updated_settings  # Store the updated settings
+                    self.settings = updated_settings
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Quit':
                 self.running = False
@@ -118,7 +146,7 @@ class Main:
         elif self.settings['difficulty'] == 'Hard':
             self.bullet_speed = 15
         else:
-            self.bullet_speed = 10  # Normal
+            self.bullet_speed = 10
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()

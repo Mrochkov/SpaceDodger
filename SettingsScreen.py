@@ -51,7 +51,7 @@ class SettingsScreen:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return self.settings  # Return settings when quitting
+                    return self.settings
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         self.selected = (self.selected - 1) % len(self.options)
