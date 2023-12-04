@@ -1,17 +1,13 @@
 import pygame
 
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-
-# Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HIGHLIGHT = (255, 255, 0)
 GREY = (104, 104, 104)
 
-# Constants for settings
 DIFFICULTY_LEVELS = ['Easy', 'Normal', 'Hard']
 GAME_SPEEDS = ['Slow', 'Normal', 'Fast']
 
@@ -47,14 +43,15 @@ class SettingsScreen:
             current_setting = self.settings[current_option]
             options_list = DIFFICULTY_LEVELS if current_option == 'difficulty' else GAME_SPEEDS
             current_index = options_list.index(current_setting)
-            self.settings[current_option] = options_list[(current_index + 1) % len(options_list)]
+            next_index = (current_index + 1) % len(options_list)
+            self.settings[current_option] = options_list[next_index]
 
     def run(self):
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return 'Quit'
+                    return self.settings  # Return settings when quitting
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         self.selected = (self.selected - 1) % len(self.options)
@@ -62,8 +59,11 @@ class SettingsScreen:
                         self.selected = (self.selected + 1) % len(self.options)
                     elif event.key == pygame.K_RETURN:
                         if self.options[self.selected] == 'Back':
-                            return 'Back'
+                            running = False
                         else:
                             self.change_setting()
 
             self.draw()
+
+        return self.settings  # Return the updated settings
+

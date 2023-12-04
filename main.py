@@ -4,6 +4,8 @@ from Bullet import Bullet
 from StartScreen import StartScreen
 from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
+import json
+
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -32,6 +34,11 @@ class Main:
         self.settings_screen = SettingsScreen(self.screen, 72)
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
 
+        self.settings = {
+            'difficulty': 'Normal',  # Default settings
+            'game_speed': 'Normal',
+        }
+
         self.spaceship_speed = 5
         self.bullet_speed = 10
         self.bullet_generation_interval = 1000  # milliseconds
@@ -43,15 +50,29 @@ class Main:
         self.running = True
         self.score = 0
 
+    def save_settings(settings):
+        with open('settings.json', 'w') as f:
+            json.dump(settings, f)
+
+    def load_settings(self):
+        try:
+            with open('settings.json', 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {'difficulty': 'Normal', 'game_speed': 'Normal'}  # Default settings
+
     def run(self):
         menu_selection = self.start_screen.run()
 
         while self.running:
             if menu_selection == 'Start Game':
+                self.apply_settings()  # Apply settings before starting the game
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
-                self.settings_screen.run()
+                updated_settings = self.settings_screen.run()
+                if updated_settings:
+                    self.settings = updated_settings  # Store the updated settings
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Quit':
                 self.running = False
@@ -59,6 +80,7 @@ class Main:
         pygame.quit()
 
     def game_loop(self):
+        self.apply_settings()
         running = True
         self.last_bullet_time = pygame.time.get_ticks()
 
@@ -90,6 +112,13 @@ class Main:
                 self.score += 1
                 bullet.counted_for_score = True
 
+    def apply_settings(self):
+        if self.settings['difficulty'] == 'Easy':
+            self.bullet_speed = 5
+        elif self.settings['difficulty'] == 'Hard':
+            self.bullet_speed = 15
+        else:
+            self.bullet_speed = 10  # Normal
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()
