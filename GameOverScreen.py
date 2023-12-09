@@ -32,4 +32,5 @@ class GameOverScreen:
                     if event.key == pygame.K_RETURN:
                         self.running = False
             self.clock.tick(60)
+
         return 'Restart'

@@ -186,6 +186,8 @@ class Main:
         text_surface = font.render(text, True, WHITE)
         self.screen.blit(text_surface, (x, y))
 
+
+
 if __name__ == '__main__':
     game = Main()
     game.run()

@@ -81,4 +81,5 @@ class StartScreen:
 
             self.draw_menu()
 
+
         return 'Quit'

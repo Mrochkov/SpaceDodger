@@ -65,5 +65,7 @@ class SettingsScreen:
 
             self.draw()
 
-        return self.settings  # Return the updated settings
+
+
+        return self.settings
 
