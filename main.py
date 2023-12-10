@@ -6,6 +6,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
+#TODO SETTINGS, LEADERBOARDS, ENTERING NAME AFTER DEATH, ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -140,6 +141,7 @@ class Main:
                 self.score += 1
                 bullet.counted_for_score = True
 
+    #TODO DOES NOT WORK YET
     def apply_settings(self):
         if self.settings['difficulty'] == 'Easy':
             self.bullet_speed = 5
