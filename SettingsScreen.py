@@ -23,6 +23,7 @@ class SettingsScreen:
         }
 
 
+
     def draw(self):
         self.screen.fill(BLACK)
         settings_title = self.font.render('Settings', True, WHITE)
