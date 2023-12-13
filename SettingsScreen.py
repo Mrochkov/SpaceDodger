@@ -22,6 +22,7 @@ class SettingsScreen:
             'game_speed': 'Normal',
         }
 
+
     def draw(self):
         self.screen.fill(BLACK)
         settings_title = self.font.render('Settings', True, WHITE)
