@@ -95,13 +95,13 @@ class Main:
 
         while self.running:
             if menu_selection == 'Start Game':
-                self.apply_settings()
+                self.apply_settings()  # Apply settings here
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
                 updated_settings = self.settings_screen.run()
                 if updated_settings:
-                    self.settings = updated_settings
+                    self.settings.update(updated_settings)  # Update settings
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Quit':
                 self.running = False
@@ -143,12 +143,24 @@ class Main:
 
     #TODO DOES NOT WORK YET
     def apply_settings(self):
-        if self.settings['difficulty'] == 'Easy':
-            self.bullet_speed = 5
-        elif self.settings['difficulty'] == 'Hard':
-            self.bullet_speed = 15
-        else:
-            self.bullet_speed = 10
+        # Adjust bullet speed and generation interval based on difficulty
+        difficulty_settings = {
+            'Easy': {'bullet_speed': 5, 'generation_interval': 2000},
+            'Normal': {'bullet_speed': 10, 'generation_interval': 1000},
+            'Hard': {'bullet_speed': 15, 'generation_interval': 500}
+        }
+        game_speed_settings = {
+            'Slow': 3,
+            'Normal': 5,
+            'Fast': 7
+        }
+
+        difficulty = self.settings['difficulty']
+        game_speed = self.settings['game_speed']
+
+        self.bullet_speed = difficulty_settings[difficulty]['bullet_speed']
+        self.bullet_generation_interval = difficulty_settings[difficulty]['generation_interval']
+        self.spaceship_speed = game_speed_settings[game_speed]
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()

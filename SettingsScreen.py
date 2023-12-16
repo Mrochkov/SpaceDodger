@@ -18,11 +18,9 @@ class SettingsScreen:
         self.options = ['Difficulty', 'Game Speed', 'Back']
         self.selected = 0
         self.settings = {
-            'difficulty': 'Normal',
-            'game_speed': 'Normal',
+            'difficulty': 'Normal',  # This could be 'Easy', 'Normal', or 'Hard'
+            'game_speed': 'Normal',  # This could be 'Slow', 'Normal', or 'Fast'
         }
-
-
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -32,42 +30,44 @@ class SettingsScreen:
 
         for index, option in enumerate(self.options):
             text_color = HIGHLIGHT if index == self.selected else GREY
-            setting_value = self.settings.get(option.lower().replace(" ", "_"), 'Not Set')
-            option_text = self.font.render(f'{option}: {setting_value}', True, text_color)
-            option_rect = option_text.get_rect(center=(SCREEN_WIDTH // 2, 150 + index * 60))
+            text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"), "Not Set")}'
+            option_text = self.font.render(text, True, text_color)
+            option_rect = option_text.get_rect(center=(SCREEN_WIDTH // 2, 150 + index * 50))
             self.screen.blit(option_text, option_rect)
 
         pygame.display.flip()
 
     def change_setting(self):
         current_option = self.options[self.selected].lower().replace(" ", "_")
-        if current_option in ['difficulty', 'game_speed']:
-            current_setting = self.settings[current_option]
-            options_list = DIFFICULTY_LEVELS if current_option == 'difficulty' else GAME_SPEEDS
-            current_index = options_list.index(current_setting)
-            next_index = (current_index + 1) % len(options_list)
-            self.settings[current_option] = options_list[next_index]
+        if current_option in self.settings:
+            self.cycle_setting(current_option)
+
+    def cycle_setting(self, setting):
+        options_list = DIFFICULTY_LEVELS if setting == 'difficulty' else GAME_SPEEDS
+        current_index = options_list.index(self.settings[setting])
+        next_index = (current_index + 1) % len(options_list)
+        self.settings[setting] = options_list[next_index]
+
+    def handle_input(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return 'Quit'
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.selected = (self.selected - 1) % len(self.options)
+                elif event.key == pygame.K_DOWN:
+                    self.selected = (self.selected + 1) % len(self.options)
+                elif event.key == pygame.K_RETURN:
+                    if self.options[self.selected] == 'Back':
+                        return 'Back'
+                    else:
+                        self.change_setting()
+        return None
 
     def run(self):
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return self.settings
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        self.selected = (self.selected - 1) % len(self.options)
-                    elif event.key == pygame.K_DOWN:
-                        self.selected = (self.selected + 1) % len(self.options)
-                    elif event.key == pygame.K_RETURN:
-                        if self.options[self.selected] == 'Back':
-                            running = False
-                        else:
-                            self.change_setting()
-
+        result = None
+        while result is None:
             self.draw()
+            result = self.handle_input()
 
-
-
-        return self.settings
-
+        return self.settings if result != 'Quit' else None
