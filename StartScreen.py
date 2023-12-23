@@ -1,7 +1,6 @@
 import pygame
 import math
 
-# Define colors
 from SettingsScreen import SettingsScreen
 
 WHITE = (255, 255, 255)

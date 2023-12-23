@@ -18,8 +18,9 @@ class SettingsScreen:
         self.options = ['Difficulty', 'Game Speed', 'Back']
         self.selected = 0
         self.settings = {
-            'difficulty': 'Normal',  # This could be 'Easy', 'Normal', or 'Hard'
-            'game_speed': 'Normal',  # This could be 'Slow', 'Normal', or 'Fast'
+            'difficulty': 'Normal',
+            'game_speed': 'Normal',
+
         }
 
     def draw(self):
@@ -39,6 +40,7 @@ class SettingsScreen:
 
     def change_setting(self):
         current_option = self.options[self.selected].lower().replace(" ", "_")
+
         if current_option in self.settings:
             self.cycle_setting(current_option)
 

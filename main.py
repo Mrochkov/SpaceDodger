@@ -1,6 +1,7 @@
 import pygame
 import random
 from Bullet import Bullet
+from Leaderboards import Leaderboards
 from StartScreen import StartScreen
 from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
@@ -26,15 +27,19 @@ SCREEN_HEIGHT = 600
 class Main:
     def __init__(self):
         pygame.init()
+        self.settings = self.load_settings()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption('Space Dodger')
         self.clock = pygame.time.Clock()
         self.score_font = pygame.font.Font(None, 36)
         self.start_font = pygame.font.Font(None, 72)
 
+
         self.start_screen = StartScreen(self.screen, 72)
         self.settings_screen = SettingsScreen(self.screen, 72)
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
+        self.leaderboards = Leaderboards(self.screen, self.score_font)
+
 
         self.settings = {
             'difficulty': 'Normal',
@@ -77,10 +82,9 @@ class Main:
             pygame.display.flip()
             pygame.time.wait(20)
 
-
-    def save_settings(settings):
+    def save_settings(self):
         with open('settings.json', 'w') as f:
-            json.dump(settings, f)
+            json.dump(self.settings, f)
 
     def load_settings(self):
         try:
@@ -95,13 +99,17 @@ class Main:
 
         while self.running:
             if menu_selection == 'Start Game':
-                self.apply_settings()  # Apply settings here
+                self.apply_settings()
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
                 updated_settings = self.settings_screen.run()
                 if updated_settings:
-                    self.settings.update(updated_settings)  # Update settings
+                    self.settings.update(updated_settings)
+                    self.save_settings()
+                menu_selection = self.start_screen.run()
+            elif menu_selection == 'Leaderboards':
+                self.leaderboards.display()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Quit':
                 self.running = False
@@ -130,7 +138,10 @@ class Main:
 
             # Collision detection
             if self.check_collisions():
-                self.game_over_screen.run(self.score)
+                player_name = self.game_over_screen.run(self.score)
+                if player_name.strip():  # Check if a non-empty name was entered
+                    self.leaderboards.update_leaderboard(player_name, self.score)
+                self.leaderboards.display()
                 running = False
 
             self.clock.tick(60)
@@ -161,6 +172,7 @@ class Main:
         self.bullet_speed = difficulty_settings[difficulty]['bullet_speed']
         self.bullet_generation_interval = difficulty_settings[difficulty]['generation_interval']
         self.spaceship_speed = game_speed_settings[game_speed]
+
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()
