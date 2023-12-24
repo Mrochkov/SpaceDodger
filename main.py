@@ -40,11 +40,8 @@ class Main:
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
         self.leaderboards = Leaderboards(self.screen, self.score_font)
 
-
-        self.settings = {
-            'difficulty': 'Normal',
-            'game_speed': 'Normal',
-        }
+        self.settings.setdefault('spaceship_speed', 5)
+        self.settings.setdefault('enemy_speed', 10)
 
         self.spaceship_speed = 5
         self.bullet_speed = 10
@@ -83,10 +80,13 @@ class Main:
             pygame.time.wait(20)
 
     def save_settings(self):
-        with open('settings.json', 'w') as f:
-            json.dump(self.settings, f)
-
-
+        try:
+            settings_path = 'settings.json'
+            with open(settings_path, 'w') as f:
+                json.dump(self.settings, f, indent=4)
+            print("Settings saved successfully to:", settings_path)  # This should confirm the save
+        except Exception as e:
+            print(f"Error saving settings: {e}")  # This will print any errors during saving
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()
@@ -126,9 +126,16 @@ class Main:
     def load_settings(self):
         try:
             with open('settings.json', 'r') as f:
-                return json.load(f)
+                settings = json.load(f)
+            settings.setdefault('spaceship_speed', 5)
+            settings.setdefault('enemy_speed', 10)
+            return settings
         except FileNotFoundError:
-            return {'difficulty': 'Normal', 'game_speed': 'Normal'}
+            print("Settings file not found. Loading default settings.")
+            return {'spaceship_speed': 5, 'enemy_speed': 10}
+        except json.JSONDecodeError:
+            print("Error decoding JSON. Loading default settings.")
+            return {'spaceship_speed': 5, 'enemy_speed': 10}
 
     def run(self):
         self.show_loading_screen()
@@ -141,6 +148,7 @@ class Main:
             elif menu_selection == 'Settings':
                 updated_settings = self.settings_screen.run()
                 if updated_settings:
+                    print("Received updated settings in Main:", updated_settings)
                     self.settings.update(updated_settings)
                     self.save_settings()
                 menu_selection = self.start_screen.run()
@@ -162,24 +170,8 @@ class Main:
 
     #TODO DOES NOT WORK YET
     def apply_settings(self):
-        # Adjust bullet speed and generation interval based on difficulty
-        difficulty_settings = {
-            'Easy': {'bullet_speed': 5, 'generation_interval': 2000},
-            'Normal': {'bullet_speed': 10, 'generation_interval': 1000},
-            'Hard': {'bullet_speed': 15, 'generation_interval': 500}
-        }
-        game_speed_settings = {
-            'Slow': 3,
-            'Normal': 5,
-            'Fast': 7
-        }
-
-        difficulty = self.settings['difficulty']
-        game_speed = self.settings['game_speed']
-
-        self.bullet_speed = difficulty_settings[difficulty]['bullet_speed']
-        self.bullet_generation_interval = difficulty_settings[difficulty]['generation_interval']
-        self.spaceship_speed = game_speed_settings[game_speed]
+        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
+        self.enemy_speed = self.settings.get('enemy_speed', 10)
 
 
 
@@ -188,7 +180,7 @@ class Main:
         time_now = pygame.time.get_ticks()
         if time_now - self.last_bullet_time > self.bullet_generation_interval:
             bullet_x = random.randint(0, SCREEN_WIDTH - 20)
-            new_bullet = Bullet(bullet_x, 0, 20, 10, self.bullet_speed)
+            new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)  # Use enemy_speed here
             self.bullet_group.add(new_bullet)
             self.last_bullet_time = time_now
 

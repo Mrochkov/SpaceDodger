@@ -15,12 +15,12 @@ class SettingsScreen:
     def __init__(self, screen, font):
         self.screen = screen
         self.font = font
-        self.options = ['Difficulty', 'Game Speed', 'Back']
+        self.options = ['Spaceship Speed', 'Enemy Speed', 'Save Settings', 'Back']
         self.selected = 0
-        self.settings = {
-            'difficulty': 'Normal',
-            'game_speed': 'Normal',
 
+        self.settings = {
+            'spaceship_speed': 5,  # Default value
+            'enemy_speed': 10,  # Default value
         }
 
     def draw(self):
@@ -42,13 +42,11 @@ class SettingsScreen:
         current_option = self.options[self.selected].lower().replace(" ", "_")
 
         if current_option in self.settings:
-            self.cycle_setting(current_option)
-
-    def cycle_setting(self, setting):
-        options_list = DIFFICULTY_LEVELS if setting == 'difficulty' else GAME_SPEEDS
-        current_index = options_list.index(self.settings[setting])
-        next_index = (current_index + 1) % len(options_list)
-        self.settings[setting] = options_list[next_index]
+            current_value = self.settings[current_option]
+            new_value = current_value + 1  # Increment the setting value
+            if new_value > 10:  # Assuming the maximum speed is 10
+                new_value = 1  # Loop back to the minimum
+            self.settings[current_option] = new_value
 
     def handle_input(self):
         for event in pygame.event.get():
@@ -60,7 +58,9 @@ class SettingsScreen:
                 elif event.key == pygame.K_DOWN:
                     self.selected = (self.selected + 1) % len(self.options)
                 elif event.key == pygame.K_RETURN:
-                    if self.options[self.selected] == 'Back':
+                    if self.options[self.selected] == 'Save Settings':
+                        return 'Save'  # Return a distinct flag for saving
+                    elif self.options[self.selected] == 'Back':
                         return 'Back'
                     else:
                         self.change_setting()
@@ -72,4 +72,7 @@ class SettingsScreen:
             self.draw()
             result = self.handle_input()
 
-        return self.settings if result != 'Quit' else None
+        if result == 'Save':
+            print("Saving settings from SettingsScreen:", self.settings)
+            return self.settings
+        return None
