@@ -86,6 +86,43 @@ class Main:
         with open('settings.json', 'w') as f:
             json.dump(self.settings, f)
 
+
+
+    def handle_player_input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.spaceship.x -= self.spaceship_speed
+        if keys[pygame.K_RIGHT]:
+            self.spaceship.x += self.spaceship_speed
+
+        self.spaceship.x = max(0, min(self.spaceship.x, SCREEN_WIDTH - self.spaceship.width))
+
+    def game_loop(self):
+        self.apply_settings()
+        running = True
+        self.last_bullet_time = pygame.time.get_ticks()
+
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+            # Game logic
+            self.handle_player_input()
+            self.handle_bullet_generation()
+            self.update_screen()
+            self.update_score()
+            self.clock.tick(60)
+
+            # Collision detection
+            if self.check_collisions():
+                running = False
+
+        player_name = self.game_over_screen.run(self.score)
+        if player_name.strip():
+            self.leaderboards.update_leaderboard(player_name, self.score)
+        self.leaderboards.display()
+
     def load_settings(self):
         try:
             with open('settings.json', 'r') as f:
@@ -99,7 +136,6 @@ class Main:
 
         while self.running:
             if menu_selection == 'Start Game':
-                self.apply_settings()
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
@@ -116,35 +152,7 @@ class Main:
 
         pygame.quit()
 
-    def game_loop(self):
-        self.apply_settings()
-        running = True
-        self.last_bullet_time = pygame.time.get_ticks()
 
-        while running:
-            # Event handling
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-
-            # Game logic
-            self.handle_player_input()
-            self.handle_bullet_generation()
-
-            # Update and draw everything
-            self.update_screen()
-
-            self.update_score()
-
-            # Collision detection
-            if self.check_collisions():
-                player_name = self.game_over_screen.run(self.score)
-                if player_name.strip():  # Check if a non-empty name was entered
-                    self.leaderboards.update_leaderboard(player_name, self.score)
-                self.leaderboards.display()
-                running = False
-
-            self.clock.tick(60)
 
     def update_score(self):
         for bullet in self.bullet_group:
@@ -174,14 +182,7 @@ class Main:
         self.spaceship_speed = game_speed_settings[game_speed]
 
 
-    def handle_player_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.spaceship.x -= self.spaceship_speed
-        if keys[pygame.K_RIGHT]:
-            self.spaceship.x += self.spaceship_speed
 
-        self.spaceship.x = max(0, min(self.spaceship.x, SCREEN_WIDTH - self.spaceship.width))
 
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
@@ -204,7 +205,6 @@ class Main:
     def check_collisions(self):
         for bullet in self.bullet_group:
             if self.spaceship.colliderect(bullet.rect):
-                self.game_over_screen.run(self.score)
                 return True
         return False
 

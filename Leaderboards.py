@@ -32,7 +32,7 @@ class Leaderboards:
 
     def update_leaderboard(self, name, score):
         self.leaderboard.append({'name': name, 'score': score})
-        self.leaderboard = sorted(self.leaderboard, key=lambda x: x['score'], reverse=True)[:10]  # Keep top 10 scores
+        self.leaderboard = sorted(self.leaderboard, key=lambda x: x['score'], reverse=True)[:20]
         self.save_leaderboard()
 
     def display(self):

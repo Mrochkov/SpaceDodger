@@ -45,7 +45,7 @@ class GameOverScreen:
                     else:
                         self.name += event.unicode
 
-            self.draw(score)  # Call draw here to update the screen each frame
+            self.draw(score)
             self.clock.tick(60)
 
         return self.name
