@@ -59,7 +59,7 @@ class SettingsScreen:
                     self.selected = (self.selected + 1) % len(self.options)
                 elif event.key == pygame.K_RETURN:
                     if self.options[self.selected] == 'Save Settings':
-                        return 'Save'  # Return a distinct flag for saving
+                        return 'Save'
                     elif self.options[self.selected] == 'Back':
                         return 'Back'
                     else:
