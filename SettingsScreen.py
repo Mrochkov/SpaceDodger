@@ -19,8 +19,8 @@ class SettingsScreen:
         self.selected = 0
 
         self.settings = {
-            'spaceship_speed': 5,  # Default value
-            'enemy_speed': 10,  # Default value
+            'spaceship_speed': 5,
+            'enemy_speed': 10,
         }
 
     def draw(self):
@@ -43,9 +43,9 @@ class SettingsScreen:
 
         if current_option in self.settings:
             current_value = self.settings[current_option]
-            new_value = current_value + 1  # Increment the setting value
-            if new_value > 10:  # Assuming the maximum speed is 10
-                new_value = 1  # Loop back to the minimum
+            new_value = current_value + 1
+            if new_value > 10:
+                new_value = 1
             self.settings[current_option] = new_value
 
     def handle_input(self):

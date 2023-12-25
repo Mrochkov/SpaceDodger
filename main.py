@@ -84,9 +84,9 @@ class Main:
             settings_path = 'settings.json'
             with open(settings_path, 'w') as f:
                 json.dump(self.settings, f, indent=4)
-            print("Settings saved successfully to:", settings_path)  # This should confirm the save
+            print("Settings saved successfully to:", settings_path)
         except Exception as e:
-            print(f"Error saving settings: {e}")  # This will print any errors during saving
+            print(f"Error saving settings: {e}")
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()
@@ -180,7 +180,7 @@ class Main:
         time_now = pygame.time.get_ticks()
         if time_now - self.last_bullet_time > self.bullet_generation_interval:
             bullet_x = random.randint(0, SCREEN_WIDTH - 20)
-            new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)  # Use enemy_speed here
+            new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)
             self.bullet_group.add(new_bullet)
             self.last_bullet_time = time_now
 

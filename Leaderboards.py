@@ -20,7 +20,7 @@ class Leaderboards:
         try:
             with open(self.file_path, 'r') as f:
                 data = json.load(f)
-                print("Loaded leaderboard:", data)  # Debugging print
+                print("Loaded leaderboard:", data)
                 return data
         except FileNotFoundError:
             print("Leaderboard file not found, creating a new one.")
@@ -55,13 +55,13 @@ class Leaderboards:
         while waiting:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    waiting = False  # Only stop waiting, not quit the entire app
+                    waiting = False
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     waiting = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
                     if self.back_button_rect.collidepoint(mouse_x, mouse_y):
-                        print("Back button clicked")  # Debugging statement
+                        print("Back button clicked")
                         waiting = False
 
         return
