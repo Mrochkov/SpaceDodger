@@ -13,6 +13,7 @@ class GameOverScreen:
         self.clock = pygame.time.Clock()
         self.name = ""
 
+
     def draw(self, score):
         self.screen.fill(BLACK)
         game_over_text = self.font.render('GAME OVER', True, WHITE)
