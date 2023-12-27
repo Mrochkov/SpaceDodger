@@ -30,6 +30,8 @@ class GameOverScreen:
 
         pygame.display.flip()
 
+
+
     def run(self, score):
         self.name = ""
         enter_name = True
