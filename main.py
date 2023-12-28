@@ -168,6 +168,7 @@ class Main:
                 self.score += 1
                 bullet.counted_for_score = True
 
+
     #TODO DOES NOT WORK YET
     def apply_settings(self):
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
