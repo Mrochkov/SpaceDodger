@@ -20,8 +20,9 @@ class SettingsScreen:
         self.screen = screen
         self.font = font
         self.settings = current_settings
-        self.options = ['Spaceship Speed', 'Enemy Speed', 'Save Settings']
+        self.options = ['Spaceship Speed', 'Enemy Speed', 'Amount of Enemies', 'Save Settings']
         self.selected = 0
+        self.difficulty_levels = ['Easy', 'Medium', 'Hard']
 
 
 
@@ -43,12 +44,17 @@ class SettingsScreen:
     def change_setting(self):
         current_option = self.options[self.selected].lower().replace(" ", "_")
 
-        if current_option in self.settings:
+        if current_option == 'amount_of_enemies':
+            current_index = self.difficulty_levels.index(self.settings[current_option])
+            new_index = (current_index + 1) % len(self.difficulty_levels)
+            self.settings[current_option] = self.difficulty_levels[new_index]
+        elif current_option in self.settings:
             current_value = self.settings[current_option]
             new_value = current_value + 1
             if new_value > 15:
                 new_value = 1
             self.settings[current_option] = new_value
+            pass
 
     def handle_input(self):
         for event in pygame.event.get():

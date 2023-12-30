@@ -1,78 +1,44 @@
-[
-    {
-        "name": "j",
-        "score": 7
-    },
-    {
-        "name": "sad",
-        "score": 6
-    },
-    {
-        "name": ";kkkkkk",
-        "score": 5
-    },
-    {
-        "name": "hjk",
-        "score": 3
-    },
-    {
-        "name": "hh",
-        "score": 2
-    },
-    {
-        "name": "ssa",
-        "score": 2
-    },
-    {
-        "name": "sadwa",
-        "score": 1
-    },
-    {
-        "name": "sad",
-        "score": 1
-    },
-    {
-        "name": "sda",
-        "score": 1
-    },
-    {
-        "name": "'",
-        "score": 1
-    },
-    {
-        "name": "jj",
-        "score": 1
-    },
-    {
-        "name": "v",
-        "score": 1
-    },
-    {
-        "name": "j",
-        "score": 1
-    },
-    {
-        "name": "jl;kj",
-        "score": 1
-    },
-    {
-        "name": "sadaw",
-        "score": 0
-    },
-    {
-        "name": "d",
-        "score": 0
-    },
-    {
-        "name": "sa",
-        "score": 0
-    },
-    {
-        "name": "sda",
-        "score": 0
-    },
-    {
-        "name": "j",
-        "score": 0
-    }
-]
+{
+    "Easy": [
+        {
+            "name": "sadw",
+            "score": 4
+        },
+        {
+            "name": "sww",
+            "score": 2
+        },
+        {
+            "name": "gsaw",
+            "score": 2
+        },
+        {
+            "name": "4",
+            "score": 2
+        }
+    ],
+    "Medium": [
+        {
+            "name": "best",
+            "score": 8
+        },
+        {
+            "name": "kkk",
+            "score": 2
+        }
+    ],
+    "Hard": [
+        {
+            "name": "1",
+            "score": 23
+        },
+        {
+            "name": "2",
+            "score": 15
+        },
+        {
+            "name": "waw",
+            "score": 8
+        }
+    ]
+}

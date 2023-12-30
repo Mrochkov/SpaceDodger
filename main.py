@@ -7,7 +7,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
-#TODO SETTINGS, ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
+#TODO ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -120,9 +120,10 @@ class Main:
             if self.check_collisions():
                 running = False
 
+        difficulty = self.settings['amount_of_enemies']
         player_name = self.game_over_screen.run(self.score)
         if player_name.strip():
-            self.leaderboards.update_leaderboard(player_name, self.score)
+            self.leaderboards.update_leaderboard(player_name, self.score, difficulty)
         self.leaderboards.display()
 
     def load_settings(self):
@@ -131,6 +132,7 @@ class Main:
                 settings = json.load(f)
             settings.setdefault('spaceship_speed', 5)
             settings.setdefault('enemy_speed', 10)
+            settings.setdefault('amount_of_enemies', 'Easy')
             return settings
         except FileNotFoundError:
             print("Settings file not found. Loading default settings.")
@@ -158,8 +160,10 @@ class Main:
                     print("No updated settings received in Main")
                 menu_selection = self.start_screen.run()
 
+
             elif menu_selection == 'Leaderboards':
                 self.leaderboards.display()
+
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Quit':
                 self.running = False
@@ -185,7 +189,14 @@ class Main:
 
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
-        if time_now - self.last_bullet_time > self.bullet_generation_interval:
+        enemy_frequency = {
+            'Easy': 1500,
+            'Medium': 1000,
+            'Hard': 500
+        }
+        interval = enemy_frequency[self.settings['amount_of_enemies']]
+
+        if time_now - self.last_bullet_time > interval:
             bullet_x = random.randint(0, SCREEN_WIDTH - 20)
             new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)
             self.bullet_group.add(new_bullet)

@@ -20,36 +20,59 @@ class Leaderboards:
         try:
             with open(self.file_path, 'r') as f:
                 data = json.load(f)
-                print("Loaded leaderboard:", data)
-                return data
+
+            # Convert list to the new dictionary format if necessary
+            if isinstance(data, list):
+                # Assuming the existing list is for one of the difficulties, e.g., 'Easy'
+                data = {'Easy': data, 'Medium': [], 'Hard': []}
+
+            # Ensure all difficulty levels are present
+            for level in ['Easy', 'Medium', 'Hard']:
+                data.setdefault(level, [])
+            return data
+
         except FileNotFoundError:
-            print("Leaderboard file not found, creating a new one.")
-            return []
+            return {'Easy': [], 'Medium': [], 'Hard': []}
         except json.JSONDecodeError:
-            print("Error decoding JSON from leaderboard file.")
-            return []
+            return {'Easy': [], 'Medium': [], 'Hard': []}
 
     def save_leaderboard(self):
         with open(self.file_path, 'w') as f:
             json.dump(self.leaderboard, f, indent=4)
 
-    def update_leaderboard(self, name, score):
-        self.leaderboard.append({'name': name, 'score': score})
-        self.leaderboard = sorted(self.leaderboard, key=lambda x: x['score'], reverse=True)[:20]
+    def update_leaderboard(self, name, score, difficulty):
+        # Use 'leaderboard' instead of 'leaderboards'
+        self.leaderboard[difficulty].append({'name': name, 'score': score})
+        self.leaderboard[difficulty] = sorted(self.leaderboard[difficulty], key=lambda x: x['score'], reverse=True)[:20]
         self.save_leaderboard()
 
     def display(self):
         self.screen.fill(BLACK)
-        for i, entry in enumerate(self.leaderboard):
-            entry_text = self.font.render(f'{i + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
-            self.screen.blit(entry_text, (100, 50 + i * 30))
 
-        pygame.draw.rect(self.screen, WHITE, self.back_button_rect)
-        back_text = self.back_button_font.render(self.back_button_text, True, BLACK)
-        back_text_rect = back_text.get_rect(center=self.back_button_rect.center)
-        self.screen.blit(back_text, back_text_rect)
+        # Screen divided into three sections
+        section_height = SCREEN_HEIGHT // 3
+        difficulties = ['Easy', 'Medium', 'Hard']
+        max_entries_per_section = 5  # Limit to 5 entries per difficulty
+
+        for i, difficulty in enumerate(difficulties):
+            y_start = section_height * i
+            y_end = y_start + section_height
+
+            # Draw a horizontal line to separate the sections
+            if i > 0:
+                pygame.draw.line(self.screen, WHITE, (0, y_start), (SCREEN_WIDTH, y_start), 3)
+
+            # Display each leaderboard in its section
+            for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
+                entry_text = self.font.render(f'{j + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
+                self.screen.blit(entry_text, (100, y_start + 30 + j * 30))
+
+            # Display the difficulty level title
+            difficulty_text = self.font.render(f'{difficulty} Difficulty', True, WHITE)
+            self.screen.blit(difficulty_text, (SCREEN_WIDTH // 2, y_start + 5))
 
         pygame.display.flip()
+
 
         waiting = True
         while waiting:
