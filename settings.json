@@ -1,4 +1,4 @@
 {
-    "spaceship_speed": 5,
-    "enemy_speed": 10
+    "spaceship_speed": 10,
+    "enemy_speed": 20
 }

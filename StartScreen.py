@@ -16,9 +16,10 @@ ORANGE = (255, 98, 0)
 
 
 class StartScreen:
-    def __init__(self, screen, font_size, spaceship_image_path='logo.png'):
+    def __init__(self, screen, font_size, current_settings, spaceship_image_path='logo.png'):
         self.screen = screen
         self.font_size = font_size
+        self.current_settings = current_settings
         self.font = pygame.font.Font(None, font_size)
         spaceship_image = pygame.image.load(spaceship_image_path)
         self.spaceship_image = pygame.transform.scale(spaceship_image, (150, 150))
@@ -50,19 +51,13 @@ class StartScreen:
 
         pygame.display.flip()
 
-
-
     def run(self):
-        last_time = pygame.time.get_ticks()
-
         while self.running:
             dt = self.clock.tick(60) / 1000.0
-
             self.menu_animation_time += dt * 4
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.running = False
                     return 'Quit'
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
@@ -71,14 +66,15 @@ class StartScreen:
                         self.selected = (self.selected + 1) % len(self.menu_options)
                     elif event.key == pygame.K_RETURN:
                         if self.menu_options[self.selected] == 'Settings':
-                            settings_screen = SettingsScreen(self.screen, self.font)
-                            settings_screen.run()
-                            self.running = True
+                            settings_screen = SettingsScreen(self.screen, self.font, self.current_settings)
+                            updated_settings = settings_screen.run()
+                            if updated_settings:
+                                self.current_settings.update(updated_settings)
+                        elif self.menu_options[self.selected] == 'Quit':
+                            return 'Quit'
                         else:
-                            self.running = False
                             return self.menu_options[self.selected]
 
             self.draw_menu()
-
-
         return 'Quit'
+

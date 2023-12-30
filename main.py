@@ -7,7 +7,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
-#TODO SETTINGS, LEADERBOARDS, ENTERING NAME AFTER DEATH, ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
+#TODO SETTINGS, ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -34,17 +34,12 @@ class Main:
         self.score_font = pygame.font.Font(None, 36)
         self.start_font = pygame.font.Font(None, 72)
 
-
-        self.start_screen = StartScreen(self.screen, 72)
-        self.settings_screen = SettingsScreen(self.screen, 72)
+        # Inside Main class
+        self.start_screen = StartScreen(self.screen, 72, self.settings)
+        self.settings_screen = SettingsScreen(self.screen, 72, self.settings)
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
         self.leaderboards = Leaderboards(self.screen, self.score_font)
 
-        self.settings.setdefault('spaceship_speed', 5)
-        self.settings.setdefault('enemy_speed', 10)
-
-        self.spaceship_speed = 5
-        self.bullet_speed = 10
         self.bullet_generation_interval = 1000
         self.last_bullet_time = 0
 
@@ -79,12 +74,18 @@ class Main:
             pygame.display.flip()
             pygame.time.wait(20)
 
+    def reset_game(self):
+        self.score = 0
+        self.spaceship = pygame.Rect(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 60, 50, 30)
+        self.bullet_group.empty()
+
     def save_settings(self):
         try:
             settings_path = 'settings.json'
             with open(settings_path, 'w') as f:
+                print("Saving these settings to file:", self.settings)
                 json.dump(self.settings, f, indent=4)
-            print("Settings saved successfully to:", settings_path)
+            print("Settings successfully saved to:", settings_path)
         except Exception as e:
             print(f"Error saving settings: {e}")
 
@@ -98,6 +99,7 @@ class Main:
         self.spaceship.x = max(0, min(self.spaceship.x, SCREEN_WIDTH - self.spaceship.width))
 
     def game_loop(self):
+        self.reset_game()
         self.apply_settings()
         running = True
         self.last_bullet_time = pygame.time.get_ticks()
@@ -146,12 +148,16 @@ class Main:
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
+                self.settings_screen = SettingsScreen(self.screen, some_font, self.settings)
                 updated_settings = self.settings_screen.run()
-                if updated_settings:
+                if updated_settings is not None:
                     print("Received updated settings in Main:", updated_settings)
                     self.settings.update(updated_settings)
                     self.save_settings()
+                else:
+                    print("No updated settings received in Main")
                 menu_selection = self.start_screen.run()
+
             elif menu_selection == 'Leaderboards':
                 self.leaderboards.display()
                 menu_selection = self.start_screen.run()

@@ -16,16 +16,14 @@ GAME_SPEEDS = ['Slow', 'Normal', 'Fast']
 
 
 class SettingsScreen:
-    def __init__(self, screen, font):
+    def __init__(self, screen, font, current_settings):
         self.screen = screen
         self.font = font
-        self.options = ['Spaceship Speed', 'Enemy Speed', 'Save Settings', 'Back']
+        self.settings = current_settings
+        self.options = ['Spaceship Speed', 'Enemy Speed', 'Save Settings']
         self.selected = 0
 
-        self.settings = {
-            'spaceship_speed': 5,
-            'enemy_speed': 10,
-        }
+
 
     def draw(self):
         self.screen.fill(BLACK)
@@ -35,7 +33,7 @@ class SettingsScreen:
 
         for index, option in enumerate(self.options):
             text_color = HIGHLIGHT if index == self.selected else GREY
-            text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"), "Not Set")}'
+            text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"))}'
             option_text = self.font.render(text, True, text_color)
             option_rect = option_text.get_rect(center=(SCREEN_WIDTH // 2, 150 + index * 50))
             self.screen.blit(option_text, option_rect)
@@ -48,7 +46,7 @@ class SettingsScreen:
         if current_option in self.settings:
             current_value = self.settings[current_option]
             new_value = current_value + 1
-            if new_value > 10:
+            if new_value > 15:
                 new_value = 1
             self.settings[current_option] = new_value
 
@@ -62,10 +60,9 @@ class SettingsScreen:
                 elif event.key == pygame.K_DOWN:
                     self.selected = (self.selected + 1) % len(self.options)
                 elif event.key == pygame.K_RETURN:
+                    print(f"Selected option: {self.options[self.selected]}")
                     if self.options[self.selected] == 'Save Settings':
                         return 'Save'
-                    elif self.options[self.selected] == 'Back':
-                        return 'Back'
                     else:
                         self.change_setting()
         return None
@@ -80,3 +77,4 @@ class SettingsScreen:
             print("Saving settings from SettingsScreen:", self.settings)
             return self.settings
         return None
+
