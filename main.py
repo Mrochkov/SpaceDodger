@@ -7,7 +7,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
-#TODO ADD SOME SORT OF IMAGE IN LOADING SCREEN, ADD SPRITES
+#TODO ADD SPRITES
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -187,7 +187,6 @@ class Main:
                 bullet.counted_for_score = True
 
 
-    #TODO DOES NOT WORK YET
     def apply_settings(self):
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
         self.enemy_speed = self.settings.get('enemy_speed', 10)
