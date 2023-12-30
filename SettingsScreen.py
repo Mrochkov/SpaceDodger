@@ -1,5 +1,7 @@
 import pygame
 
+
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -7,6 +9,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HIGHLIGHT = (255, 255, 0)
 GREY = (104, 104, 104)
+
 
 DIFFICULTY_LEVELS = ['Easy', 'Normal', 'Hard']
 GAME_SPEEDS = ['Slow', 'Normal', 'Fast']
