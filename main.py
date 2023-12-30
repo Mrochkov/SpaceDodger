@@ -50,22 +50,30 @@ class Main:
         self.score = 0
 
     def show_loading_screen(self):
+        background_image_path = 'background.jpg'
+        background_image = pygame.image.load(background_image_path)
+        background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+        title_font = pygame.font.Font(None, 72)  # You can use a specific font instead of None
+        title_text = title_font.render('Space Dodger', True, WHITE)  # Render the title
+        title_rect = title_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 5))  # Position the title
+
         loading_bar_width_max = 400
         loading_bar_height = 20
         loading_bar_x = (SCREEN_WIDTH - loading_bar_width_max) // 2
-        loading_bar_y = SCREEN_HEIGHT // 2 + 50
+        loading_bar_y = SCREEN_HEIGHT // 1.4 + 50
 
         for i in range(101):
-            self.screen.fill(BLACK)
+            self.screen.blit(background_image, (0, 0))
+            self.screen.blit(title_text, title_rect)  # Draw the title
 
             # Draw loading text
             loading_text = self.score_font.render('Loading...', True, WHITE)
-            text_rect = loading_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+            text_rect = loading_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 1.1))
             self.screen.blit(loading_text, text_rect)
 
             # Draw loading bar background
-            pygame.draw.rect(self.screen, GREY,
-                             [loading_bar_x, loading_bar_y, loading_bar_width_max, loading_bar_height])
+            pygame.draw.rect(self.screen, GREY, [loading_bar_x, loading_bar_y, loading_bar_width_max, loading_bar_height])
 
             # Draw loading bar progress
             current_bar_width = (loading_bar_width_max * i) // 100
