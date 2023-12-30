@@ -23,7 +23,6 @@ class Leaderboards:
 
             # Convert list to the new dictionary format if necessary
             if isinstance(data, list):
-                # Assuming the existing list is for one of the difficulties, e.g., 'Easy'
                 data = {'Easy': data, 'Medium': [], 'Hard': []}
 
             # Ensure all difficulty levels are present
@@ -52,7 +51,7 @@ class Leaderboards:
         # Screen divided into three sections
         section_height = SCREEN_HEIGHT // 3
         difficulties = ['Easy', 'Medium', 'Hard']
-        max_entries_per_section = 5  # Limit to 5 entries per difficulty
+        max_entries_per_section = 5
 
         for i, difficulty in enumerate(difficulties):
             y_start = section_height * i

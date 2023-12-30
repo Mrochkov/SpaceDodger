@@ -11,9 +11,6 @@ HIGHLIGHT = (255, 255, 0)
 GREY = (104, 104, 104)
 
 
-DIFFICULTY_LEVELS = ['Easy', 'Normal', 'Hard']
-GAME_SPEEDS = ['Slow', 'Normal', 'Fast']
-
 
 class SettingsScreen:
     def __init__(self, screen, font, current_settings):
