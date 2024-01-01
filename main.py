@@ -197,9 +197,9 @@ class Main:
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
         enemy_frequency = {
-            'Easy': 1500,
-            'Medium': 1000,
-            'Hard': 500
+            'Easy': 1000,
+            'Medium': 700,
+            'Hard': 350
         }
         interval = enemy_frequency[self.settings['amount_of_enemies']]
 
