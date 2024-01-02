@@ -192,12 +192,10 @@ class Main:
         self.enemy_speed = self.settings.get('enemy_speed', 10)
 
 
-
-
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
         enemy_frequency = {
-            'Easy': 1000,
+            'Easy': 1100,
             'Medium': 700,
             'Hard': 350
         }
