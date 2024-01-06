@@ -141,6 +141,7 @@ class Main:
             settings.setdefault('spaceship_speed', 5)
             settings.setdefault('enemy_speed', 10)
             settings.setdefault('amount_of_enemies', 'Easy')
+            settings.setdefault('fullscreen_mode', False)
             return settings
         except FileNotFoundError:
             print("Settings file not found. Loading default settings.")
@@ -161,8 +162,8 @@ class Main:
                 self.settings_screen = SettingsScreen(self.screen, some_font, self.settings)
                 updated_settings = self.settings_screen.run()
                 if updated_settings is not None:
-                    print("Received updated settings in Main:", updated_settings)
                     self.settings.update(updated_settings)
+                    self.apply_settings()
                     self.save_settings()
                 else:
                     print("No updated settings received in Main")
@@ -188,8 +189,16 @@ class Main:
 
 
     def apply_settings(self):
+
+        if self.settings.get('fullscreen_mode', False):
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
         self.enemy_speed = self.settings.get('enemy_speed', 10)
+        self.update_screen_references()
+        self.redraw_screen()
 
 
     def handle_bullet_generation(self):
@@ -227,7 +236,35 @@ class Main:
         text_surface = font.render(text, True, WHITE)
         self.screen.blit(text_surface, (x, y))
 
+    def update_screen_references(self):
+        self.game_over_screen.screen = self.screen
+        self.leaderboards.screen = self.screen
+        self.settings_screen.screen = self.screen
+        self.start_screen.screen = self.screen
 
+        self.reposition_game_elements()
+
+    def reposition_game_elements(self):
+        self.spaceship.x = self.screen.get_width() // 2 - self.spaceship.width // 2
+        self.spaceship.y = self.screen.get_height() - 60 - self.spaceship.height
+
+    def redraw_screen(self):
+        # Clear the screen
+        self.screen.fill(BLACK)
+
+        # Redraw the spaceship
+        pygame.draw.rect(self.screen, WHITE, self.spaceship)
+
+        # Redraw the bullets
+        for bullet in self.bullet_group:
+            self.screen.blit(bullet.image, bullet.rect)
+
+        # Redraw the score text
+        score_text = self.score_font.render(f'Score: {self.score}', True, WHITE)
+        self.screen.blit(score_text, (10, 10))
+
+        # Update the display
+        pygame.display.flip()
 
 if __name__ == '__main__':
     game = Main()

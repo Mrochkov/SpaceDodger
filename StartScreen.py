@@ -16,15 +16,13 @@ ORANGE = (255, 98, 0)
 
 
 class StartScreen:
-    def __init__(self, screen, font_size, current_settings, spaceship_image_path='logo.png'):
+    def __init__(self, screen, font_size, current_settings, background_image_path='DarkerBackground.png'):
         self.screen = screen
         self.font_size = font_size
         self.current_settings = current_settings
         self.font = pygame.font.Font(None, font_size)
-        spaceship_image = pygame.image.load(spaceship_image_path)
-        self.spaceship_image = pygame.transform.scale(spaceship_image, (150, 150))
-        self.spaceship_rect = self.spaceship_image.get_rect(
-            center=(screen.get_width() // 2, 50))
+        background_image = pygame.image.load(background_image_path)
+        self.background_image = pygame.transform.scale(background_image, (screen.get_width(), screen.get_height()))
         self.running = True
         self.selected = 0
         self.menu_options = ['Start Game', 'Settings', 'Leaderboards', 'Quit']
@@ -33,8 +31,7 @@ class StartScreen:
 
     def draw_menu(self):
         self.screen.fill(BLACK)
-
-        self.screen.blit(self.spaceship_image, self.spaceship_rect)
+        self.screen.blit(self.background_image, (0, 0))
         menu_start_y = 300
 
         for index, option in enumerate(self.menu_options):
