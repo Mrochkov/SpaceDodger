@@ -7,7 +7,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
-#TODO ADD SPRITES
+#TODO ADD SPRITES, FULLSCREEN MODE, CLEAN CODE, WRITE DOCUMENTATION
 
 # Define colors
 WHITE = (255, 255, 255)
