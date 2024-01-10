@@ -7,7 +7,7 @@ from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
 
-#TODO ADD SPRITES, FULLSCREEN MODE, CLEAN CODE, WRITE DOCUMENTATION
+#TODO FULLSCREEN MODE(idk if ill do it honestly), CLEAN CODE, WRITE DOCUMENTATION
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -54,9 +54,9 @@ class Main:
         background_image = pygame.image.load(background_image_path)
         background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        title_font = pygame.font.Font(None, 72)  # You can use a specific font instead of None
-        title_text = title_font.render('Space Dodger', True, WHITE)  # Render the title
-        title_rect = title_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 5))  # Position the title
+        title_font = pygame.font.Font(None, 72)
+        title_text = title_font.render('Space Dodger', True, WHITE)
+        title_rect = title_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 5))
 
         loading_bar_width_max = 400
         loading_bar_height = 20
@@ -65,7 +65,7 @@ class Main:
 
         for i in range(101):
             self.screen.blit(background_image, (0, 0))
-            self.screen.blit(title_text, title_rect)  # Draw the title
+            self.screen.blit(title_text, title_rect)
 
             # Draw loading text
             loading_text = self.score_font.render('Loading...', True, WHITE)
@@ -159,7 +159,7 @@ class Main:
                 self.game_loop()
                 menu_selection = self.start_screen.run()
             elif menu_selection == 'Settings':
-                self.settings_screen = SettingsScreen(self.screen, some_font, self.settings)
+                self.settings_screen = SettingsScreen(self.screen, self.settings)
                 updated_settings = self.settings_screen.run()
                 if updated_settings is not None:
                     self.settings.update(updated_settings)
