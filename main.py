@@ -197,6 +197,9 @@ class Main:
 
 
     def apply_settings(self):
+        self.enemy_speed = self.settings.get('enemy_speed', 10)
+        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
+
         if self.settings.get('fullscreen_mode', False):
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         else:
