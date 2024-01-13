@@ -92,12 +92,18 @@ class Main:
     def save_settings(self):
         try:
             settings_path = 'settings.json'
+
+            # Debug print
+            print("Attempting to save these settings:", self.settings)
+
             with open(settings_path, 'w') as f:
-                print("Saving these settings to file:", self.settings)
                 json.dump(self.settings, f, indent=4)
+
             print("Settings successfully saved to:", settings_path)
         except Exception as e:
-            print(f"Error saving settings: {e}")
+            print("Error saving settings:", e)
+            # Additional debug print
+            print("Failed to save these settings:", self.settings)
 
     def handle_player_input(self):
         keys = pygame.key.get_pressed()
@@ -191,24 +197,23 @@ class Main:
 
 
     def apply_settings(self):
-        self.enemy_speed = self.settings.get('enemy_speed', 10)
-        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
-
         if self.settings.get('fullscreen_mode', False):
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-            # Update references in other screens
-        self.update_screen_references()
+            # Update the current screen size
+        self.current_screen_width, self.current_screen_height = self.screen.get_size()
+
+        # Update elements' positions and sizes
+        self.reposition_game_elements()
         self.redraw_screen()
 
 
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
         screen_width, _ = self.screen.get_size()
-        bullet_x = random.randint(0, screen_width - 20)
-        new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)
+
 
         enemy_frequency = {
             'Easy': 1100,
@@ -218,7 +223,7 @@ class Main:
         interval = enemy_frequency[self.settings['amount_of_enemies']]
 
         if time_now - self.last_bullet_time > interval:
-            bullet_x = random.randint(0, SCREEN_WIDTH - 20)
+            bullet_x = random.randint(0, screen_width - 20)
             new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)
             self.bullet_group.add(new_bullet)
             self.last_bullet_time = time_now
@@ -232,7 +237,7 @@ class Main:
             self.screen.blit(bullet.image, bullet.rect)
 
         pygame.draw.rect(self.screen, WHITE, self.spaceship)
-        self.draw_text(f'Score: {self.score}', self.score_font, 10, 10)
+        self.draw_text(f'Score: {self.score}', self.score_font, self.current_screen_width * 0.05, self.current_screen_height * 0.05)
         pygame.display.flip()
 
     def check_collisions(self):
@@ -258,8 +263,8 @@ class Main:
         screen_width, screen_height = self.screen.get_size()
 
         # Reposition the spaceship and any other elements
-        self.spaceship.x = screen_width // 2 - self.spaceship.width // 2
-        self.spaceship.y = screen_height - 60 - self.spaceship.height
+        self.spaceship.x = self.current_screen_width // 2 - self.spaceship.width // 2
+        self.spaceship.y = self.current_screen_height - 60 - self.spaceship.height
 
     def redraw_screen(self):
         # Clear the screen

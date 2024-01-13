@@ -5,8 +5,16 @@
             "score": 10
         },
         {
+            "name": "dd",
+            "score": 8
+        },
+        {
             "name": "jjj",
             "score": 6
+        },
+        {
+            "name": "bb",
+            "score": 5
         },
         {
             "name": "sadw",
@@ -21,11 +29,19 @@
             "score": 4
         },
         {
+            "name": "sad",
+            "score": 4
+        },
+        {
             "name": "jh",
             "score": 3
         },
         {
             "name": "lnj",
+            "score": 3
+        },
+        {
+            "name": "gfb",
             "score": 3
         },
         {
@@ -53,20 +69,16 @@
             "score": 2
         },
         {
+            "name": "gbfg",
+            "score": 2
+        },
+        {
             "name": "l,mn",
             "score": 1
         },
         {
             "name": "lm",
             "score": 1
-        },
-        {
-            "name": "adsa",
-            "score": 1
-        },
-        {
-            "name": "lk'kl",
-            "score": 0
         }
     ],
     "Medium": [
@@ -113,7 +125,15 @@
             "score": 10
         },
         {
+            "name": "bb",
+            "score": 9
+        },
+        {
             "name": "waw",
+            "score": 8
+        },
+        {
+            "name": "sad",
             "score": 8
         },
         {
@@ -125,7 +145,19 @@
             "score": 5
         },
         {
+            "name": "sda",
+            "score": 4
+        },
+        {
+            "name": "assd",
+            "score": 3
+        },
+        {
             "name": "km",
+            "score": 2
+        },
+        {
+            "name": "ddssd",
             "score": 2
         }
     ]
