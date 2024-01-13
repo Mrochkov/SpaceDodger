@@ -1,6 +1,10 @@
 {
     "Easy": [
         {
+            "name": "dfs",
+            "score": 20
+        },
+        {
             "name": "bhb",
             "score": 10
         },
@@ -37,6 +41,14 @@
             "score": 4
         },
         {
+            "name": "h'",
+            "score": 4
+        },
+        {
+            "name": "sad",
+            "score": 4
+        },
+        {
             "name": "jh",
             "score": 3
         },
@@ -66,18 +78,6 @@
         },
         {
             "name": "g",
-            "score": 2
-        },
-        {
-            "name": "sad",
-            "score": 2
-        },
-        {
-            "name": "gbfg",
-            "score": 2
-        },
-        {
-            "name": "fgdf",
             "score": 2
         }
     ],

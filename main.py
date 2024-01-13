@@ -112,7 +112,7 @@ class Main:
         if keys[pygame.K_RIGHT]:
             self.spaceship.x += self.spaceship_speed
 
-        self.spaceship.x = max(0, min(self.spaceship.x, SCREEN_WIDTH - self.spaceship.width))
+        self.spaceship.x = max(0, min(self.spaceship.x, self.current_screen_width - self.spaceship.width))
 
     def game_loop(self):
         self.reset_game()
