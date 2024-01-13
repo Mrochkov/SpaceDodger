@@ -30,6 +30,7 @@ class StartScreen:
         self.clock = pygame.time.Clock()
 
     def draw_menu(self):
+        screen_width, screen_height = self.screen.get_size()
         self.screen.fill(BLACK)
         self.screen.blit(self.background_image, (0, 0))
         menu_start_y = 300
@@ -43,7 +44,7 @@ class StartScreen:
             else:
                 text = self.font.render(option, True, GREY)
 
-            text_rect = text.get_rect(center=(self.screen.get_width() // 2, menu_start_y + index * 60))
+            text_rect = text.get_rect(center=(screen_width // 2, menu_start_y + index * 60))
             self.screen.blit(text, text_rect)
 
         pygame.display.flip()

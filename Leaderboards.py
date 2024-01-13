@@ -46,10 +46,13 @@ class Leaderboards:
         self.save_leaderboard()
 
     def display(self):
+        screen_width, screen_height = self.screen.get_size()
+        section_height = screen_height // 3
+
         self.screen.fill(BLACK)
 
         # Screen divided into three sections
-        section_height = SCREEN_HEIGHT // 3
+        section_height = screen_height // 3
         difficulties = ['Easy', 'Medium', 'Hard']
         max_entries_per_section = 5
 
@@ -59,7 +62,7 @@ class Leaderboards:
 
             # Draw a horizontal line to separate the sections
             if i > 0:
-                pygame.draw.line(self.screen, WHITE, (0, y_start), (SCREEN_WIDTH, y_start), 3)
+                pygame.draw.line(self.screen, WHITE, (0, y_start), (screen_width, y_start), 3)
 
             # Display each leaderboard in its section
             for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
@@ -68,7 +71,7 @@ class Leaderboards:
 
             # Display the difficulty level title
             difficulty_text = self.font.render(f'{difficulty} Difficulty', True, WHITE)
-            self.screen.blit(difficulty_text, (SCREEN_WIDTH // 2, y_start + 5))
+            self.screen.blit(difficulty_text, (screen_width // 2, y_start + 5))
 
         pygame.display.flip()
 

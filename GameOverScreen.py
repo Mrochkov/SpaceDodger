@@ -19,10 +19,11 @@ class GameOverScreen:
         game_over_text = self.font.render('GAME OVER', True, WHITE)
         score_text = self.font.render(f'Final Score: {score}', True, WHITE)
         name_text = self.font.render(f'Enter Name: {self.name}', True, WHITE)
+        screen_width, screen_height = self.screen.get_size()
 
-        game_over_rect = game_over_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
-        score_rect = score_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 10))
-        name_rect = name_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 70))
+        game_over_rect = game_over_text.get_rect(center=(screen_width // 2, screen_height // 2 - 50))
+        score_rect = score_text.get_rect(center=(screen_width // 2, screen_height // 2 + 10))
+        name_rect = name_text.get_rect(center=(screen_width // 2, screen_height // 2 + 70))
 
         self.screen.blit(game_over_text, game_over_rect)
         self.screen.blit(score_text, score_rect)

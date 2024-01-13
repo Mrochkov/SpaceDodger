@@ -33,6 +33,8 @@ class Main:
         self.clock = pygame.time.Clock()
         self.score_font = pygame.font.Font(None, 36)
         self.start_font = pygame.font.Font(None, 72)
+        self.enemy_speed = self.settings.get('enemy_speed', 10)
+        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
 
         # Inside Main class
         self.start_screen = StartScreen(self.screen, 72, self.settings)
@@ -189,20 +191,25 @@ class Main:
 
 
     def apply_settings(self):
+        self.enemy_speed = self.settings.get('enemy_speed', 10)
+        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
 
         if self.settings.get('fullscreen_mode', False):
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        self.spaceship_speed = self.settings.get('spaceship_speed', 5)
-        self.enemy_speed = self.settings.get('enemy_speed', 10)
+            # Update references in other screens
         self.update_screen_references()
         self.redraw_screen()
 
 
     def handle_bullet_generation(self):
         time_now = pygame.time.get_ticks()
+        screen_width, _ = self.screen.get_size()
+        bullet_x = random.randint(0, screen_width - 20)
+        new_bullet = Bullet(bullet_x, 0, 20, 10, self.enemy_speed)
+
         enemy_frequency = {
             'Easy': 1100,
             'Medium': 700,
@@ -219,6 +226,8 @@ class Main:
     def update_screen(self):
         self.screen.fill(BLACK)
         self.bullet_group.update()
+        screen_width, screen_height = self.screen.get_size()
+
         for bullet in self.bullet_group:
             self.screen.blit(bullet.image, bullet.rect)
 
@@ -242,11 +251,15 @@ class Main:
         self.settings_screen.screen = self.screen
         self.start_screen.screen = self.screen
 
+        # Update positions of game elements
         self.reposition_game_elements()
 
     def reposition_game_elements(self):
-        self.spaceship.x = self.screen.get_width() // 2 - self.spaceship.width // 2
-        self.spaceship.y = self.screen.get_height() - 60 - self.spaceship.height
+        screen_width, screen_height = self.screen.get_size()
+
+        # Reposition the spaceship and any other elements
+        self.spaceship.x = screen_width // 2 - self.spaceship.width // 2
+        self.spaceship.y = screen_height - 60 - self.spaceship.height
 
     def redraw_screen(self):
         # Clear the screen

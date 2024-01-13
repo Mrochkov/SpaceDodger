@@ -24,16 +24,18 @@ class SettingsScreen:
 
 
     def draw(self):
+        screen_width, screen_height = self.screen.get_size()
         self.screen.fill(BLACK)
+
         settings_title = self.font.render('Settings', True, WHITE)
-        title_rect = settings_title.get_rect(center=(SCREEN_WIDTH // 2, 50))
+        title_rect = settings_title.get_rect(center=(screen_width // 2, 50))
         self.screen.blit(settings_title, title_rect)
 
         for index, option in enumerate(self.options):
             text_color = HIGHLIGHT if index == self.selected else GREY
             text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"))}'
             option_text = self.font.render(text, True, text_color)
-            option_rect = option_text.get_rect(center=(SCREEN_WIDTH // 2, 150 + index * 50))
+            option_rect = option_text.get_rect(center=(screen_width // 2, 150 + index * 50))
             self.screen.blit(option_text, option_rect)
 
         pygame.display.flip()
