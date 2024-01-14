@@ -34,7 +34,14 @@ class StartScreen:
         self.screen.fill(BLACK)
         scaled_background = pygame.transform.scale(self.background_image, (screen_width, screen_height))
         self.screen.blit(scaled_background, (0, 0))
-        menu_start_y = 300
+
+        title_font = pygame.font.Font(None, 120)
+        title_text = title_font.render('Space Dodger', True, RED)
+        title_rect = title_text.get_rect(
+            center=(screen_width // 2, screen_height // 4))
+        self.screen.blit(title_text, title_rect)
+
+        start_y = screen_height - len(self.menu_options) * 60 - 100
 
         for index, option in enumerate(self.menu_options):
             if index == self.selected:
@@ -45,7 +52,7 @@ class StartScreen:
             else:
                 text = self.font.render(option, True, WHITE)
 
-            text_rect = text.get_rect(center=(screen_width // 2, menu_start_y + index * 60))
+            text_rect = text.get_rect(center=(screen_width // 2, start_y + index * 60))
             self.screen.blit(text, text_rect)
 
         pygame.display.flip()

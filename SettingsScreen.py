@@ -38,9 +38,14 @@ class SettingsScreen:
 
         for index, option in enumerate(self.options):
             text_color = HIGHLIGHT if index == self.selected else WHITE
-            text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"))}'
+            text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"), "")}'
             option_text = self.font.render(text, True, text_color)
-            option_rect = option_text.get_rect(center=(screen_width // 2, 150 + index * 50))
+
+            if option == 'Save Settings':
+                option_rect = option_text.get_rect(center=(screen_width // 2, screen_height - 50))
+            else:
+                option_rect = option_text.get_rect(center=(screen_width // 2, 150 + index * 50))
+
             self.screen.blit(option_text, option_rect)
 
         pygame.display.flip()
