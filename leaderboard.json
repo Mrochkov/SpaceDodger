@@ -1,184 +1,26 @@
 {
     "Easy": [
         {
-            "name": "dfs",
-            "score": 20
+            "name": "sdaw",
+            "score": 2
         },
         {
-            "name": "bhb",
-            "score": 10
+            "name": "jjjvy",
+            "score": 0
         },
         {
-            "name": "dd",
-            "score": 8
-        },
-        {
-            "name": "jjj",
-            "score": 6
-        },
-        {
-            "name": "bb",
-            "score": 5
-        },
-        {
-            "name": "sadw",
-            "score": 4
-        },
-        {
-            "name": "jjn",
-            "score": 4
-        },
-        {
-            "name": "awda",
-            "score": 4
-        },
-        {
-            "name": "sad",
-            "score": 4
+            "name": "dfds",
+            "score": 0
         },
         {
             "name": "fgdf",
-            "score": 4
-        },
-        {
-            "name": "h'",
-            "score": 4
-        },
-        {
-            "name": "sad",
-            "score": 4
-        },
-        {
-            "name": "jh",
-            "score": 3
-        },
-        {
-            "name": "lnj",
-            "score": 3
-        },
-        {
-            "name": "gfb",
-            "score": 3
-        },
-        {
-            "name": "sww",
-            "score": 2
-        },
-        {
-            "name": "gsaw",
-            "score": 2
-        },
-        {
-            "name": "4",
-            "score": 2
-        },
-        {
-            "name": "km",
-            "score": 2
-        },
-        {
-            "name": "g",
-            "score": 2
-        }
-    ],
-    "Medium": [
-        {
-            "name": "ew",
-            "score": 10
-        },
-        {
-            "name": "best",
-            "score": 8
-        },
-        {
-            "name": "oh",
-            "score": 4
+            "score": 0
         },
         {
             "name": "jjj",
-            "score": 3
-        },
-        {
-            "name": "kkk",
-            "score": 2
-        },
-        {
-            "name": "hh",
-            "score": 1
-        },
-        {
-            "name": "km",
-            "score": 0
-        },
-        {
-            "name": "mm",
             "score": 0
         }
     ],
-    "Hard": [
-        {
-            "name": "wasaw",
-            "score": 76
-        },
-        {
-            "name": "gkjh",
-            "score": 48
-        },
-        {
-            "name": "1",
-            "score": 23
-        },
-        {
-            "name": "2",
-            "score": 15
-        },
-        {
-            "name": "jklkj",
-            "score": 10
-        },
-        {
-            "name": "ry",
-            "score": 10
-        },
-        {
-            "name": "gg",
-            "score": 10
-        },
-        {
-            "name": "bb",
-            "score": 9
-        },
-        {
-            "name": "waw",
-            "score": 8
-        },
-        {
-            "name": "sad",
-            "score": 8
-        },
-        {
-            "name": "ghj",
-            "score": 7
-        },
-        {
-            "name": "pawel",
-            "score": 5
-        },
-        {
-            "name": "sda",
-            "score": 4
-        },
-        {
-            "name": "assd",
-            "score": 3
-        },
-        {
-            "name": "km",
-            "score": 2
-        },
-        {
-            "name": "ddssd",
-            "score": 2
-        }
-    ]
+    "Medium": [],
+    "Hard": []
 }

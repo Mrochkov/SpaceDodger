@@ -21,18 +21,23 @@ class SettingsScreen:
         self.selected = 0
         self.difficulty_levels = ['Easy', 'Medium', 'Hard']
 
+        self.background_image_path = 'DarkerBackground.png'
+        self.background_image = pygame.image.load(self.background_image_path)
+        self.background_image = pygame.transform.scale(self.background_image, self.screen.get_size())
 
 
     def draw(self):
         screen_width, screen_height = self.screen.get_size()
+
         self.screen.fill(BLACK)
+        self.screen.blit(self.background_image, (0, 0))
 
         settings_title = self.font.render('Settings', True, WHITE)
         title_rect = settings_title.get_rect(center=(screen_width // 2, 50))
         self.screen.blit(settings_title, title_rect)
 
         for index, option in enumerate(self.options):
-            text_color = HIGHLIGHT if index == self.selected else GREY
+            text_color = HIGHLIGHT if index == self.selected else WHITE
             text = f'{option}: {self.settings.get(option.lower().replace(" ", "_"))}'
             option_text = self.font.render(text, True, text_color)
             option_rect = option_text.get_rect(center=(screen_width // 2, 150 + index * 50))

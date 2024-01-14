@@ -6,8 +6,10 @@ from StartScreen import StartScreen
 from GameOverScreen import GameOverScreen
 from SettingsScreen import SettingsScreen
 import json
+import os
 
-#TODO FULLSCREEN MODE(idk if ill do it honestly), CLEAN CODE, WRITE DOCUMENTATION
+
+#TODO CLEAN CODE, WRITE DOCUMENTATION
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -35,6 +37,7 @@ class Main:
         self.start_font = pygame.font.Font(None, 72)
         self.enemy_speed = self.settings.get('enemy_speed', 10)
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
+        self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
         # Inside Main class
         self.start_screen = StartScreen(self.screen, 72, self.settings)
@@ -83,6 +86,53 @@ class Main:
 
             pygame.display.flip()
             pygame.time.wait(20)
+
+    def show_welcome_screen(self):
+        background_image_path = 'DarkerBackground.png'
+        background_image = pygame.image.load(background_image_path)
+        background_image = pygame.transform.scale(background_image,
+                                                  (self.current_screen_width, self.current_screen_height))
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        running = False
+
+            self.screen.fill(BLACK)
+            self.screen.blit(background_image, (0, 0))
+
+            title_font = pygame.font.Font(None, 72)
+            title_text = title_font.render('Space Dodger', True, WHITE)
+            title_rect = title_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 4))
+            self.screen.blit(title_text, title_rect)
+
+            description_font = pygame.font.Font(None, 36)
+            descriptions = ["This game is all about dodging the incoming bullets.",
+                            "Five of the highest scores land on the leaderboard, good luck!"]
+            for i, line in enumerate(descriptions):
+                description_text = description_font.render(line, True, WHITE)
+                description_rect = description_text.get_rect(center=(self.current_screen_width // 2,
+                                                                     self.current_screen_height // 2 + i * 30))
+                self.screen.blit(description_text, description_rect)
+
+            control_instructions = "Use arrow keys to move, Enter to select"
+            control_text = description_font.render(control_instructions, True, WHITE)
+            control_rect = control_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 1.5))
+            self.screen.blit(control_text, control_rect)
+
+            continue_text = description_font.render("Press Enter to continue...", True, WHITE)
+            continue_rect = continue_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 1.3))
+            self.screen.blit(continue_text, continue_rect)
+
+            pygame.display.flip()
+            self.clock.tick(60)
+
+    def is_first_run(self):
+        return not os.path.exists('leaderboard.json')
 
     def reset_game(self):
         self.score = 0
@@ -160,6 +210,9 @@ class Main:
 
     def run(self):
         self.show_loading_screen()
+        if self.is_first_run():
+            self.show_welcome_screen()
+
         menu_selection = self.start_screen.run()
 
         while self.running:
@@ -259,32 +312,26 @@ class Main:
         self.settings_screen.screen = self.screen
         self.start_screen.screen = self.screen
 
-        # Update positions of game elements
         self.reposition_game_elements()
 
+    # Reposition the spaceship and any other elements
     def reposition_game_elements(self):
         screen_width, screen_height = self.screen.get_size()
 
-        # Reposition the spaceship and any other elements
         self.spaceship.x = self.current_screen_width // 2 - self.spaceship.width // 2
         self.spaceship.y = self.current_screen_height - 60 - self.spaceship.height
 
     def redraw_screen(self):
-        # Clear the screen
         self.screen.fill(BLACK)
 
-        # Redraw the spaceship
         pygame.draw.rect(self.screen, WHITE, self.spaceship)
 
-        # Redraw the bullets
         for bullet in self.bullet_group:
             self.screen.blit(bullet.image, bullet.rect)
 
-        # Redraw the score text
         score_text = self.score_font.render(f'Score: {self.score}', True, WHITE)
         self.screen.blit(score_text, (10, 10))
 
-        # Update the display
         pygame.display.flip()
 
 if __name__ == '__main__':

@@ -32,7 +32,8 @@ class StartScreen:
     def draw_menu(self):
         screen_width, screen_height = self.screen.get_size()
         self.screen.fill(BLACK)
-        self.screen.blit(self.background_image, (0, 0))
+        scaled_background = pygame.transform.scale(self.background_image, (screen_width, screen_height))
+        self.screen.blit(scaled_background, (0, 0))
         menu_start_y = 300
 
         for index, option in enumerate(self.menu_options):
@@ -42,7 +43,7 @@ class StartScreen:
                 animated_font = pygame.font.Font(None, animated_font_size)
                 text = animated_font.render(option, True, HIGHLIGHT)
             else:
-                text = self.font.render(option, True, GREY)
+                text = self.font.render(option, True, WHITE)
 
             text_rect = text.get_rect(center=(screen_width // 2, menu_start_y + index * 60))
             self.screen.blit(text, text_rect)

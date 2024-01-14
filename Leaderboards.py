@@ -16,6 +16,10 @@ class Leaderboards:
         self.back_button_text = 'Back'
         self.back_button_rect = pygame.Rect(SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT - 100, 100, 40)
 
+        self.background_image_path = 'DarkerBackground.png'
+        self.background_image = pygame.image.load(self.background_image_path)
+        self.background_image = pygame.transform.scale(self.background_image, self.screen.get_size())
+
     def load_leaderboard(self):
         try:
             with open(self.file_path, 'r') as f:
@@ -47,9 +51,10 @@ class Leaderboards:
 
     def display(self):
         screen_width, screen_height = self.screen.get_size()
-        section_height = screen_height // 3
 
-        self.screen.fill(BLACK)
+        # Scale the background image dynamically based on current screen size
+        scaled_background = pygame.transform.scale(self.background_image, (screen_width, screen_height))
+        self.screen.blit(scaled_background, (0, 0))
 
         # Screen divided into three sections
         section_height = screen_height // 3
