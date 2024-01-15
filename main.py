@@ -39,6 +39,11 @@ class Main:
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
         self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
+        # Player got hit animation
+        self.player_hit = False
+        self.player_hit_animation_duration = 1000
+        self.player_hit_animation_start_time = 0
+
         # Inside Main class
         self.start_screen = StartScreen(self.screen, 72, self.settings)
         self.settings_screen = SettingsScreen(self.screen, 72, self.settings)
@@ -156,28 +161,71 @@ class Main:
 
         self.spaceship.x = max(0, min(self.spaceship.x, self.current_screen_width - self.spaceship.width))
 
+    def update_player_model(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.player_hit:
+            elapsed_time = current_time - self.player_hit_animation_start_time
+
+            # Calculate the visibility of the player based on the elapsed time and flash interval
+            self.player_visible = elapsed_time % (2 * self.player_flash_interval) < self.player_flash_interval
+
+            # Check if the hit animation duration has passed
+            if elapsed_time > self.player_hit_animation_duration:
+                # End the hit animation and reset related variables
+                self.player_hit = False
+                self.player_visible = True
+
+        # Draw the player only if it's visible
+        if self.player_visible:
+            pygame.draw.rect(self.screen, WHITE, self.spaceship)
+
     def game_loop(self):
         self.reset_game()
         self.apply_settings()
         running = True
         self.last_bullet_time = pygame.time.get_ticks()
+        self.player_hit = False
+        self.player_hit_animation_start_time = 0
+        self.player_hit_duration = 1000
+        self.player_visible = True
+        self.player_flash_interval = 200
+        self.player_last_flash_time = pygame.time.get_ticks()
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
+            current_time = pygame.time.get_ticks()
+
+            # Check if the player has been hit and handle animation
+            if self.check_collisions() and not self.player_hit:
+                self.player_hit = True
+                self.player_hit_animation_start_time = current_time
+
             # Game logic
-            self.handle_player_input()
-            self.handle_bullet_generation()
+            if not self.player_hit:
+                self.handle_player_input()
+                self.handle_bullet_generation()
+
+            # Update the player model and game screen
             self.update_screen()
             self.update_score()
+
+            # Flash the player model during hit animation
+            if self.player_hit:
+                elapsed_time = current_time - self.player_hit_animation_start_time
+                if elapsed_time > self.player_hit_duration:
+                    # Delay before showing game over screen
+                    pygame.time.delay(2000)
+                    running = False
+
+            self.update_player_model()
+
             self.clock.tick(60)
 
-            # Collision detection
-            if self.check_collisions():
-                running = False
-
+        # After the game loop ends, go to the death screen
         difficulty = self.settings['amount_of_enemies']
         player_name = self.game_over_screen.run(self.score)
         if player_name.strip():
@@ -283,8 +331,12 @@ class Main:
         for bullet in self.bullet_group:
             self.screen.blit(bullet.image, bullet.rect)
 
-        pygame.draw.rect(self.screen, WHITE, self.spaceship)
-        self.draw_text(f'Score: {self.score}', self.score_font, self.current_screen_width * 0.05, self.current_screen_height * 0.05)
+        # Only draw the player as white when it's visible during blinking animation
+        if self.player_visible:
+            pygame.draw.rect(self.screen, WHITE, self.spaceship)
+
+        self.draw_text(f'Score: {self.score}', self.score_font, self.current_screen_width * 0.05,
+                       self.current_screen_height * 0.05)
         pygame.display.flip()
 
     def check_collisions(self):

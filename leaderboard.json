@@ -1,5 +1,54 @@
 {
-    "Easy": [],
+    "Easy": [
+        {
+            "name": "rgg",
+            "score": 13
+        },
+        {
+            "name": "df",
+            "score": 4
+        },
+        {
+            "name": "jjj",
+            "score": 4
+        },
+        {
+            "name": "sda",
+            "score": 2
+        },
+        {
+            "name": "cx",
+            "score": 1
+        },
+        {
+            "name": "gh",
+            "score": 1
+        },
+        {
+            "name": "sdsa",
+            "score": 1
+        },
+        {
+            "name": "dsf",
+            "score": 1
+        },
+        {
+            "name": "sdsad",
+            "score": 1
+        },
+        {
+            "name": "nj",
+            "score": 1
+        },
+        {
+            "name": "sad",
+            "score": 0
+        },
+        {
+            "name": "jl",
+            "score": 0
+        }
+    ],
     "Medium": [],
     "Hard": [
         {
