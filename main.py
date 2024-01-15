@@ -72,15 +72,15 @@ class Main:
             self.screen.blit(background_image, (0, 0))
             self.screen.blit(title_text, title_rect)
 
-            # Draw loading text
+            # Loading text
             loading_text = self.score_font.render('Loading...', True, WHITE)
             text_rect = loading_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 1.1))
             self.screen.blit(loading_text, text_rect)
 
-            # Draw loading bar background
+            # Loading bar background
             pygame.draw.rect(self.screen, GREY, [loading_bar_x, loading_bar_y, loading_bar_width_max, loading_bar_height])
 
-            # Draw loading bar progress
+            # Loading bar progress
             current_bar_width = (loading_bar_width_max * i) // 100
             pygame.draw.rect(self.screen, GREEN, [loading_bar_x, loading_bar_y, current_bar_width, loading_bar_height])
 
@@ -106,7 +106,7 @@ class Main:
             self.screen.blit(background_image, (0, 0))
 
             title_font = pygame.font.Font(None, 72)
-            title_text = title_font.render('Space Dodger', True, WHITE)
+            title_text = title_font.render('Space Dodger', True, RED)
             title_rect = title_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 4))
             self.screen.blit(title_text, title_rect)
 
@@ -124,7 +124,7 @@ class Main:
             control_rect = control_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 1.5))
             self.screen.blit(control_text, control_rect)
 
-            continue_text = description_font.render("Press Enter to continue...", True, WHITE)
+            continue_text = description_font.render("Press Enter to continue...", True, GREEN)
             continue_rect = continue_text.get_rect(center=(self.current_screen_width // 2, self.current_screen_height // 1.3))
             self.screen.blit(continue_text, continue_rect)
 
@@ -142,17 +142,9 @@ class Main:
     def save_settings(self):
         try:
             settings_path = 'settings.json'
-
-            # Debug print
-            print("Attempting to save these settings:", self.settings)
-
             with open(settings_path, 'w') as f:
                 json.dump(self.settings, f, indent=4)
-
-            print("Settings successfully saved to:", settings_path)
         except Exception as e:
-            print("Error saving settings:", e)
-            # Additional debug print
             print("Failed to save these settings:", self.settings)
 
     def handle_player_input(self):
@@ -226,8 +218,7 @@ class Main:
                     self.settings.update(updated_settings)
                     self.apply_settings()
                     self.save_settings()
-                else:
-                    print("No updated settings received in Main")
+
                 menu_selection = self.start_screen.run()
 
 

@@ -9,7 +9,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 HIGHLIGHT = (255, 255, 0)
 GREY = (104, 104, 104)
-
+DARK_WHITE = (248, 248, 255)
+RED = (252, 3, 3)
 
 
 class SettingsScreen:
@@ -32,7 +33,7 @@ class SettingsScreen:
         self.screen.fill(BLACK)
         self.screen.blit(self.background_image, (0, 0))
 
-        settings_title = self.font.render('Settings', True, WHITE)
+        settings_title = self.font.render('Settings', True, RED)
         title_rect = settings_title.get_rect(center=(screen_width // 2, 50))
         self.screen.blit(settings_title, title_rect)
 
@@ -77,7 +78,6 @@ class SettingsScreen:
                 elif event.key == pygame.K_DOWN:
                     self.selected = (self.selected + 1) % len(self.options)
                 elif event.key == pygame.K_RETURN:
-                    print(f"Selected option: {self.options[self.selected]}")
                     if self.options[self.selected] == 'Save Settings':
                         return 'Save'
                     else:
@@ -91,7 +91,6 @@ class SettingsScreen:
             result = self.handle_input()
 
         if result == 'Save':
-            print("Saving settings from SettingsScreen:", self.settings)
             return self.settings
         return None
 

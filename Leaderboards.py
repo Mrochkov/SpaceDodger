@@ -3,6 +3,7 @@ import pygame
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+RED = (252, 3, 3)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -44,7 +45,6 @@ class Leaderboards:
             json.dump(self.leaderboard, f, indent=4)
 
     def update_leaderboard(self, name, score, difficulty):
-        # Use 'leaderboard' instead of 'leaderboards'
         self.leaderboard[difficulty].append({'name': name, 'score': score})
         self.leaderboard[difficulty] = sorted(self.leaderboard[difficulty], key=lambda x: x['score'], reverse=True)[:20]
         self.save_leaderboard()
@@ -52,11 +52,11 @@ class Leaderboards:
     def display(self):
         screen_width, screen_height = self.screen.get_size()
 
-        # Scale the background image dynamically based on current screen size
+        # Scale the background based on current screen size
         scaled_background = pygame.transform.scale(self.background_image, (screen_width, screen_height))
         self.screen.blit(scaled_background, (0, 0))
 
-        # Screen divided into three sections
+        # three sections
         section_height = screen_height // 3
         difficulties = ['Easy', 'Medium', 'Hard']
         max_entries_per_section = 5
@@ -65,17 +65,17 @@ class Leaderboards:
             y_start = section_height * i
             y_end = y_start + section_height
 
-            # Draw a horizontal line to separate the sections
+            # horizontal line
             if i > 0:
                 pygame.draw.line(self.screen, WHITE, (0, y_start), (screen_width, y_start), 3)
 
-            # Display each leaderboard in its section
+            # Sections
             for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
                 entry_text = self.font.render(f'{j + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
                 self.screen.blit(entry_text, (100, y_start + 30 + j * 30))
 
-            # Display the difficulty level title
-            difficulty_text = self.font.render(f'{difficulty} Difficulty', True, WHITE)
+            # Titles
+            difficulty_text = self.font.render(f'{difficulty} Difficulty', True, RED)
             self.screen.blit(difficulty_text, (screen_width // 2, y_start + 5))
 
         pygame.display.flip()
@@ -91,7 +91,6 @@ class Leaderboards:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = event.pos
                     if self.back_button_rect.collidepoint(mouse_x, mouse_y):
-                        print("Back button clicked")
                         waiting = False
 
         return
