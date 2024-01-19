@@ -326,7 +326,6 @@ class Main:
     def update_screen(self):
         self.screen.fill(BLACK)
         self.bullet_group.update()
-        screen_width, screen_height = self.screen.get_size()
 
         for bullet in self.bullet_group:
             self.screen.blit(bullet.image, bullet.rect)
@@ -359,8 +358,6 @@ class Main:
 
     # Reposition the spaceship and any other elements
     def reposition_game_elements(self):
-        screen_width, screen_height = self.screen.get_size()
-
         self.spaceship.x = self.current_screen_width // 2 - self.spaceship.width // 2
         self.spaceship.y = self.current_screen_height - 60 - self.spaceship.height
 

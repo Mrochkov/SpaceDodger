@@ -65,16 +65,13 @@ class Leaderboards:
             y_start = section_height * i
             y_end = y_start + section_height
 
-            # horizontal line
             if i > 0:
                 pygame.draw.line(self.screen, WHITE, (0, y_start), (screen_width, y_start), 3)
 
-            # Sections
             for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
                 entry_text = self.font.render(f'{j + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
                 self.screen.blit(entry_text, (100, y_start + 30 + j * 30))
 
-            # Titles
             difficulty_text = self.font.render(f'{difficulty} Difficulty', True, RED)
             self.screen.blit(difficulty_text, (screen_width // 2, y_start + 5))
 
