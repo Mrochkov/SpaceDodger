@@ -4,7 +4,7 @@ import random
 
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
-colors = [(255, 0 ,0), (255, 215, 0), (255, 69, 0)]
+colors = [(255, 0, 0), (255, 215, 0), (255, 69, 0)]
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, speed):
@@ -29,7 +29,7 @@ class Bullet(pygame.sprite.Sprite):
                 random.uniform(-2, 2),
                 random.uniform(-2, 2),
                 random.uniform(2, 5),
-                RED,
+                random.choice(colors),
                 gravity=0.1
             )
             self.particles.append(particle)
