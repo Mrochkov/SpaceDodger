@@ -328,9 +328,9 @@ class Main:
         self.bullet_group.update()
 
         for bullet in self.bullet_group:
+            bullet.render_particles(self.screen)
             self.screen.blit(bullet.image, bullet.rect)
 
-        # Only draw the player as white when it's visible during blinking animation
         if self.player_visible:
             pygame.draw.rect(self.screen, WHITE, self.spaceship)
 
