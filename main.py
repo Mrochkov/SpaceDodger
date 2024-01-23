@@ -326,6 +326,12 @@ class Main:
             'Medium': 700,
             'Hard': 350
         }
+        fullscreen_mode = self.settings.get('fullscreen_mode', False)
+
+        if fullscreen_mode:
+            for difficulty in enemy_frequency:
+                enemy_frequency[difficulty] //= 2
+
         interval = enemy_frequency[self.settings['amount_of_enemies']]
 
         if time_now - self.last_bullet_time > interval:

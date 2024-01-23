@@ -45,8 +45,7 @@ class SettingsScreen:
             if option == 'Save Settings':
                 option_rect = option_text.get_rect(center=(screen_width // 2, screen_height - 50))
             else:
-                option_rect = option_text.get_rect(center=(screen_width // 2, 150 + index * 50))
-
+                option_rect = option_text.get_rect(center=(screen_width // 2, 200 + index * 50))
             self.screen.blit(option_text, option_rect)
 
         pygame.display.flip()

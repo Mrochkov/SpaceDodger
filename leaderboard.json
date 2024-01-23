@@ -5,6 +5,10 @@
             "score": 13
         },
         {
+            "name": "scas",
+            "score": 13
+        },
+        {
             "name": "gg",
             "score": 8
         },
@@ -26,6 +30,10 @@
         },
         {
             "name": "hh",
+            "score": 4
+        },
+        {
+            "name": "sac",
             "score": 4
         },
         {
@@ -71,14 +79,6 @@
         {
             "name": "sdsad",
             "score": 1
-        },
-        {
-            "name": "nj",
-            "score": 1
-        },
-        {
-            "name": "asdsa",
-            "score": 1
         }
     ],
     "Medium": [
@@ -97,6 +97,10 @@
     ],
     "Hard": [
         {
+            "name": "asc",
+            "score": 285
+        },
+        {
             "name": "sadas",
             "score": 35
         },
@@ -110,6 +114,10 @@
         },
         {
             "name": "nn ",
+            "score": 15
+        },
+        {
+            "name": "sad",
             "score": 15
         },
         {
