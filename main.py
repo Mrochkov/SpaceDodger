@@ -248,6 +248,7 @@ class Main:
             print("Error decoding JSON. Loading default settings.")
             return {'spaceship_speed': 5, 'enemy_speed': 10}
 
+
     def run(self):
         self.show_loading_screen()
         if self.is_first_run():
@@ -284,7 +285,19 @@ class Main:
     def update_score(self):
         for bullet in self.bullet_group:
             if bullet.rect.y > self.spaceship.y and not bullet.counted_for_score:
-                self.score += 1
+                difficulty = self.settings.get('amount_of_enemies', 'Easy')
+
+                if difficulty == 'Easy':
+                    score_multiplier = 1
+                elif difficulty == 'Medium':
+                    score_multiplier = 3
+                elif difficulty == 'Hard':
+                    score_multiplier = 5
+                else:
+                    score_multiplier = 1
+
+                self.score += score_multiplier
+
                 bullet.counted_for_score = True
 
 
@@ -297,10 +310,8 @@ class Main:
         else:
             self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-            # Update the current screen size
         self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
-        # Update elements' positions and sizes
         self.reposition_game_elements()
         self.redraw_screen()
 

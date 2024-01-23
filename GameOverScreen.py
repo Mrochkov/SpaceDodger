@@ -13,25 +13,30 @@ class GameOverScreen:
         self.clock = pygame.time.Clock()
         self.name = ""
 
-
     def draw(self, score):
-        self.screen.fill(BLACK)
-        game_over_text = self.font.render('GAME OVER', True, WHITE)
-        score_text = self.font.render(f'Final Score: {score}', True, WHITE)
-        name_text = self.font.render(f'Enter Name: {self.name}', True, WHITE)
         screen_width, screen_height = self.screen.get_size()
 
-        game_over_rect = game_over_text.get_rect(center=(screen_width // 2, screen_height // 2 - 50))
-        score_rect = score_text.get_rect(center=(screen_width // 2, screen_height // 2 + 10))
-        name_rect = name_text.get_rect(center=(screen_width // 2, screen_height // 2 + 70))
+        self.screen.fill(BLACK)
 
+        # Make 'GAME OVER' text bigger, considering screen size
+        game_over_font_size = int(screen_height * 0.15)
+        game_over_font = pygame.font.Font(None, game_over_font_size)
+        game_over_text = game_over_font.render('GAME OVER', True, WHITE)
+        game_over_rect = game_over_text.get_rect(center=(screen_width // 2, screen_height // 3))
         self.screen.blit(game_over_text, game_over_rect)
+
+        # Make 'Final Score' and 'Enter Name' texts smaller with a margin top
+        small_font_size = int(screen_height * 0.07)
+        small_font = pygame.font.Font(None, small_font_size)
+        score_text = small_font.render(f'Final Score: {score}', True, WHITE)
+        name_text = small_font.render(f'Enter Name: {self.name}', True, WHITE)
+        score_rect = score_text.get_rect(center=(screen_width // 2, screen_height // 2))
+        name_rect = name_text.get_rect(center=(screen_width // 2, screen_height // 2 + int(screen_height * 0.05)))
+
         self.screen.blit(score_text, score_rect)
         self.screen.blit(name_text, name_rect)
 
         pygame.display.flip()
-
-
 
     def run(self, score):
         self.name = ""

@@ -70,10 +70,22 @@ class Leaderboards:
 
             for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
                 entry_text = self.font.render(f'{j + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
-                self.screen.blit(entry_text, (100, y_start + 30 + j * 30))
+                text_width, text_height = entry_text.get_size()
+                x_position = (screen_width - text_width) // 2  # Calculate the x position to center the text
+                self.screen.blit(entry_text, (x_position, y_start + 30 + j * 30))
 
-            difficulty_text = self.font.render(f'{difficulty} Difficulty', True, RED)
-            self.screen.blit(difficulty_text, (screen_width // 2, y_start + 5))
+            # Set the color based on difficulty
+            if difficulty == 'Easy':
+                difficulty_color = (0, 255, 0)  # Green
+            elif difficulty == 'Medium':
+                difficulty_color = (255, 165, 0)  # Dark Yellow
+            elif difficulty == 'Hard':
+                difficulty_color = (255, 0, 0)  # Red
+
+            difficulty_text = self.font.render(f'{difficulty} Difficulty', True, difficulty_color)
+            text_width, text_height = difficulty_text.get_size()
+            x_position = (screen_width - text_width) // 2  # Calculate the x position to center the text
+            self.screen.blit(difficulty_text, (x_position, y_start + 5))
 
         pygame.display.flip()
 

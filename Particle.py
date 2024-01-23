@@ -18,6 +18,6 @@ class Particle():
         self.y += self.yvel
         if self.gravity is not None:
             self.yvel += self.gravity
-        self.radius -= 0.1
+        self.radius -= 0.5
 
         pygame.draw.circle(win, self.color, (int(self.x), int(self.y)), int(self.radius))

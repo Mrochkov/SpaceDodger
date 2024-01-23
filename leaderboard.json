@@ -5,6 +5,18 @@
             "score": 13
         },
         {
+            "name": "gg",
+            "score": 8
+        },
+        {
+            "name": "daws",
+            "score": 5
+        },
+        {
+            "name": "dsa",
+            "score": 5
+        },
+        {
             "name": "df",
             "score": 4
         },
@@ -13,7 +25,31 @@
             "score": 4
         },
         {
+            "name": "hh",
+            "score": 4
+        },
+        {
+            "name": "fd",
+            "score": 3
+        },
+        {
+            "name": "caxxaxxx",
+            "score": 3
+        },
+        {
+            "name": "dsa",
+            "score": 3
+        },
+        {
             "name": "sda",
+            "score": 2
+        },
+        {
+            "name": "ggff",
+            "score": 2
+        },
+        {
+            "name": "xcz",
             "score": 2
         },
         {
@@ -41,16 +77,41 @@
             "score": 1
         },
         {
-            "name": "sad",
-            "score": 0
-        },
-        {
-            "name": "jl",
-            "score": 0
+            "name": "asdsa",
+            "score": 1
         }
     ],
-    "Medium": [],
+    "Medium": [
+        {
+            "name": "was",
+            "score": 30
+        },
+        {
+            "name": "mkm",
+            "score": 4
+        },
+        {
+            "name": "jnj",
+            "score": 3
+        }
+    ],
     "Hard": [
+        {
+            "name": "sadas",
+            "score": 35
+        },
+        {
+            "name": "bnb",
+            "score": 30
+        },
+        {
+            "name": "xcx",
+            "score": 15
+        },
+        {
+            "name": "nn ",
+            "score": 15
+        },
         {
             "name": "ssss",
             "score": 5
