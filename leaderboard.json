@@ -9,6 +9,10 @@
             "score": 13
         },
         {
+            "name": ",,",
+            "score": 13
+        },
+        {
             "name": "gg",
             "score": 8
         },
@@ -18,6 +22,10 @@
         },
         {
             "name": "dsa",
+            "score": 5
+        },
+        {
+            "name": ".m",
             "score": 5
         },
         {
@@ -71,14 +79,6 @@
         {
             "name": "sdsa",
             "score": 1
-        },
-        {
-            "name": "dsf",
-            "score": 1
-        },
-        {
-            "name": "sdsad",
-            "score": 1
         }
     ],
     "Medium": [
@@ -97,8 +97,16 @@
     ],
     "Hard": [
         {
+            "name": "jhl",
+            "score": 480
+        },
+        {
             "name": "asc",
             "score": 285
+        },
+        {
+            "name": "m;l",
+            "score": 40
         },
         {
             "name": "sadas",

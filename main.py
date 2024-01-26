@@ -22,7 +22,6 @@ PURPLE = (125, 0, 163)
 ORANGE = (255, 98, 0)
 GREY= (128, 128, 128)
 
-# Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -39,12 +38,10 @@ class Main:
         self.spaceship_speed = self.settings.get('spaceship_speed', 5)
         self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
-        # Player got hit animation
         self.player_hit = False
         self.player_hit_animation_duration = 1000
         self.player_hit_animation_start_time = 0
 
-        # Inside Main class
         self.start_screen = StartScreen(self.screen, 72, self.settings)
         self.settings_screen = SettingsScreen(self.screen, 72, self.settings)
         self.game_over_screen = GameOverScreen(self.screen, self.start_font)
@@ -77,15 +74,12 @@ class Main:
             self.screen.blit(background_image, (0, 0))
             self.screen.blit(title_text, title_rect)
 
-            # Loading text
             loading_text = self.score_font.render('Loading...', True, WHITE)
             text_rect = loading_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 1.1))
             self.screen.blit(loading_text, text_rect)
 
-            # Loading bar background
             pygame.draw.rect(self.screen, GREY, [loading_bar_x, loading_bar_y, loading_bar_width_max, loading_bar_height])
 
-            # Loading bar progress
             current_bar_width = (loading_bar_width_max * i) // 100
             pygame.draw.rect(self.screen, GREEN, [loading_bar_x, loading_bar_y, current_bar_width, loading_bar_height])
 
@@ -167,16 +161,12 @@ class Main:
         if self.player_hit:
             elapsed_time = current_time - self.player_hit_animation_start_time
 
-            # Calculate the visibility of the player based on the elapsed time and flash interval
             self.player_visible = elapsed_time % (2 * self.player_flash_interval) < self.player_flash_interval
 
-            # Check if the hit animation duration has passed
             if elapsed_time > self.player_hit_animation_duration:
-                # End the hit animation and reset related variables
                 self.player_hit = False
                 self.player_visible = True
 
-        # Draw the player only if it's visible
         if self.player_visible:
             pygame.draw.rect(self.screen, WHITE, self.spaceship)
 
@@ -209,15 +199,12 @@ class Main:
                 self.handle_player_input()
                 self.handle_bullet_generation()
 
-            # Update the player model and game screen
             self.update_screen()
             self.update_score()
 
-            # Flash the player model during hit animation
             if self.player_hit:
                 elapsed_time = current_time - self.player_hit_animation_start_time
                 if elapsed_time > self.player_hit_duration:
-                    # Delay before showing game over screen
                     pygame.time.delay(2000)
                     running = False
 
@@ -225,7 +212,6 @@ class Main:
 
             self.clock.tick(60)
 
-        # After the game loop ends, go to the death screen
         difficulty = self.settings['amount_of_enemies']
         player_name = self.game_over_screen.run(self.score)
         if player_name.strip():
@@ -322,9 +308,9 @@ class Main:
 
 
         enemy_frequency = {
-            'Easy': 1100,
-            'Medium': 700,
-            'Hard': 350
+            'Easy': 700,
+            'Medium': 400,
+            'Hard': 200
         }
         fullscreen_mode = self.settings.get('fullscreen_mode', False)
 
@@ -373,7 +359,6 @@ class Main:
 
         self.reposition_game_elements()
 
-    # Reposition the spaceship and any other elements
     def reposition_game_elements(self):
         self.spaceship.x = self.current_screen_width // 2 - self.spaceship.width // 2
         self.spaceship.y = self.current_screen_height - 60 - self.spaceship.height
