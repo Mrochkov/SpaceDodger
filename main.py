@@ -163,21 +163,20 @@ class Main:
             elapsed_time = current_time - self.player_hit_animation_start_time
 
             if elapsed_time < self.player_hit_animation_duration:
-                # Create particles for the player explosion
-                for _ in range(5):  # You can adjust the number of particles
+
+                for _ in range(5):
                     particle = PlayerExplosionParticle(self.spaceship.centerx, self.spaceship.centery,
                                                        random.uniform(-2, 2), random.uniform(-2, 2),
                                                        5, WHITE, gravity=0.1)
                     self.particle_group.add(particle)
 
-                # Draw the particles and clear the screen
                 self.particle_group.update()
                 self.screen.fill((0, 0, 0))
                 self.particle_group.draw(self.screen)
             else:
                 self.player_hit = False
                 self.player_visible = True
-                self.particle_group.empty()  # Clear particles when not exploding
+                self.particle_group.empty()
 
         if not self.player_hit and self.player_visible:
             pygame.draw.rect(self.screen, WHITE, self.spaceship)
@@ -185,43 +184,44 @@ class Main:
     def game_loop(self):
         self.reset_game()
         self.apply_settings()
-        self.game_state = "playing"  # Add a game state variable
+        self.game_state = "playing"
         self.last_bullet_time = pygame.time.get_ticks()
         self.player_hit = False
         self.player_hit_animation_start_time = 0
         self.player_hit_duration = 1000
         self.player_visible = True
-        self.player_flash_interval = 200
-        self.player_last_flash_time = pygame.time.get_ticks()
 
-        while self.game_state == "playing":  # Check game state
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.game_state = "game_over"  # Set game over state
-                    break
-
+        while self.game_state == "playing":
             current_time = pygame.time.get_ticks()
 
-            if self.check_collisions() and not self.player_hit:
-                self.player_hit = True
-                self.player_hit_animation_start_time = current_time
+            self.screen.fill(BLACK)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.game_state = "game_over"
+                    break
 
             if not self.player_hit:
                 self.handle_player_input()
                 self.handle_bullet_generation()
 
-            # Clear the screen
-            self.screen.fill((0, 0, 0))
-
-            # Update and draw the particles
-            self.particle_group.update()
-            self.particle_group.draw(self.screen)
-
-            # Update and draw the remaining game elements
             self.bullet_group.update()
             for bullet in self.bullet_group:
                 bullet.render_particles(self.screen)
                 self.screen.blit(bullet.image, bullet.rect)
+
+            if not self.player_hit:
+                self.update_score()
+
+            if self.check_collisions() and not self.player_hit:
+                self.player_hit = True
+                self.player_hit_animation_start_time = current_time
+                self.player_visible = False
+
+            if self.player_hit:
+                self.handle_player_hit_animation()
+                if (current_time - self.player_hit_animation_start_time) >= self.player_hit_duration:
+                    self.game_state = "game_over"
 
             if self.player_visible:
                 pygame.draw.rect(self.screen, WHITE, self.spaceship)
@@ -230,17 +230,8 @@ class Main:
                            self.current_screen_height * 0.05)
 
             pygame.display.flip()
-
-            if self.player_hit:
-                elapsed_time = current_time - self.player_hit_animation_start_time
-                if elapsed_time > self.player_hit_duration:
-                    self.game_state = "game_over"  # Set game over state
-
-            self.handle_player_hit_animation()
-
             self.clock.tick(60)
 
-        # Game over logic
         if self.game_state == "game_over":
             difficulty = self.settings['amount_of_enemies']
             player_name = self.game_over_screen.run(self.score)
@@ -374,6 +365,8 @@ class Main:
     def check_collisions(self):
         for bullet in self.bullet_group:
             if self.spaceship.colliderect(bullet.rect):
+                self.player_hit = True
+                self.player_hit_animation_start_time = pygame.time.get_ticks()
                 return True
         return False
 
@@ -400,21 +393,19 @@ class Main:
             elapsed_time = current_time - self.player_hit_animation_start_time
 
             if elapsed_time < self.player_hit_animation_duration:
-                # Create particles for the player explosion
-                for _ in range(5):  # You can adjust the number of particles
+                for _ in range(5):
                     particle = PlayerExplosionParticle(self.spaceship.centerx, self.spaceship.centery,
                                                        random.uniform(-2, 2), random.uniform(-2, 2),
                                                        5, WHITE, gravity=0.1)
                     self.particle_group.add(particle)
 
-                # Draw the particles and clear the screen
                 self.particle_group.update()
                 self.screen.fill((0, 0, 0))
                 self.particle_group.draw(self.screen)
             else:
                 self.player_hit = False
                 self.player_visible = True
-                self.particle_group.empty()  # Clear particles when not exploding
+                self.particle_group.empty()
 
         if not self.player_hit and self.player_visible:
             pygame.draw.rect(self.screen, WHITE, self.spaceship)
