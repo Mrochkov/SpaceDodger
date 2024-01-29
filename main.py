@@ -40,8 +40,9 @@ class Main:
         self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
         self.player_hit = False
-        self.player_hit_animation_duration = 1000
+        self.player_hit_animation_duration = 2000
         self.player_hit_animation_start_time = 0
+        self.player_visible = True
 
         self.start_screen = StartScreen(self.screen, 72, self.settings)
         self.settings_screen = SettingsScreen(self.screen, 72, self.settings)
@@ -188,8 +189,7 @@ class Main:
         self.last_bullet_time = pygame.time.get_ticks()
         self.player_hit = False
         self.player_hit_animation_start_time = 0
-        self.player_hit_duration = 1000
-        self.player_visible = True
+        self.player_hit_duration = 2000
 
         while self.game_state == "playing":
             current_time = pygame.time.get_ticks()
@@ -220,7 +220,7 @@ class Main:
 
             if self.player_hit:
                 self.handle_player_hit_animation()
-                if (current_time - self.player_hit_animation_start_time) >= self.player_hit_duration:
+                if current_time - self.player_hit_animation_start_time >= self.player_hit_duration:
                     self.game_state = "game_over"
 
             if self.player_visible:
