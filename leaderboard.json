@@ -29,6 +29,10 @@
             "score": 5
         },
         {
+            "name": "vvv",
+            "score": 5
+        },
+        {
             "name": "df",
             "score": 4
         },
@@ -45,6 +49,14 @@
             "score": 4
         },
         {
+            "name": "sad",
+            "score": 4
+        },
+        {
+            "name": "das",
+            "score": 4
+        },
+        {
             "name": "fd",
             "score": 3
         },
@@ -57,28 +69,16 @@
             "score": 3
         },
         {
+            "name": "fv",
+            "score": 3
+        },
+        {
             "name": "sda",
             "score": 2
         },
         {
             "name": "ggff",
             "score": 2
-        },
-        {
-            "name": "xcz",
-            "score": 2
-        },
-        {
-            "name": "cx",
-            "score": 1
-        },
-        {
-            "name": "gh",
-            "score": 1
-        },
-        {
-            "name": "sdsa",
-            "score": 1
         }
     ],
     "Medium": [
@@ -101,8 +101,20 @@
             "score": 480
         },
         {
+            "name": "mm",
+            "score": 355
+        },
+        {
             "name": "asc",
             "score": 285
+        },
+        {
+            "name": "kjkj",
+            "score": 175
+        },
+        {
+            "name": "jjn",
+            "score": 120
         },
         {
             "name": "m;l",
@@ -135,6 +147,30 @@
         {
             "name": "dddd",
             "score": 1
+        },
+        {
+            "name": "ascas",
+            "score": 0
+        },
+        {
+            "name": "adsa",
+            "score": 0
+        },
+        {
+            "name": "vcxv",
+            "score": 0
+        },
+        {
+            "name": "cx",
+            "score": 0
+        },
+        {
+            "name": "sfds",
+            "score": 0
+        },
+        {
+            "name": "dfds",
+            "score": 0
         }
     ]
 }

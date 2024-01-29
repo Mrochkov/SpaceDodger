@@ -18,14 +18,12 @@ class GameOverScreen:
 
         self.screen.fill(BLACK)
 
-        # Make 'GAME OVER' text bigger, considering screen size
         game_over_font_size = int(screen_height * 0.15)
         game_over_font = pygame.font.Font(None, game_over_font_size)
         game_over_text = game_over_font.render('GAME OVER', True, WHITE)
         game_over_rect = game_over_text.get_rect(center=(screen_width // 2, screen_height // 3))
         self.screen.blit(game_over_text, game_over_rect)
 
-        # Make 'Final Score' and 'Enter Name' texts smaller with a margin top
         small_font_size = int(screen_height * 0.07)
         small_font = pygame.font.Font(None, small_font_size)
         score_text = small_font.render(f'Final Score: {score}', True, WHITE)

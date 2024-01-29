@@ -26,11 +26,9 @@ class Leaderboards:
             with open(self.file_path, 'r') as f:
                 data = json.load(f)
 
-            # Convert list to the new dictionary format if necessary
             if isinstance(data, list):
                 data = {'Easy': data, 'Medium': [], 'Hard': []}
 
-            # Ensure all difficulty levels are present
             for level in ['Easy', 'Medium', 'Hard']:
                 data.setdefault(level, [])
             return data
@@ -52,11 +50,9 @@ class Leaderboards:
     def display(self):
         screen_width, screen_height = self.screen.get_size()
 
-        # Scale the background based on current screen size
         scaled_background = pygame.transform.scale(self.background_image, (screen_width, screen_height))
         self.screen.blit(scaled_background, (0, 0))
 
-        # three sections
         section_height = screen_height // 3
         difficulties = ['Easy', 'Medium', 'Hard']
         max_entries_per_section = 5
@@ -71,20 +67,19 @@ class Leaderboards:
             for j, entry in enumerate(self.leaderboard[difficulty][:max_entries_per_section]):
                 entry_text = self.font.render(f'{j + 1}. {entry["name"]}: {entry["score"]}', True, WHITE)
                 text_width, text_height = entry_text.get_size()
-                x_position = (screen_width - text_width) // 2  # Calculate the x position to center the text
+                x_position = (screen_width - text_width) // 2
                 self.screen.blit(entry_text, (x_position, y_start + 30 + j * 30))
 
-            # Set the color based on difficulty
             if difficulty == 'Easy':
-                difficulty_color = (0, 255, 0)  # Green
+                difficulty_color = (0, 255, 0)
             elif difficulty == 'Medium':
-                difficulty_color = (255, 165, 0)  # Dark Yellow
+                difficulty_color = (255, 165, 0)
             elif difficulty == 'Hard':
-                difficulty_color = (255, 0, 0)  # Red
+                difficulty_color = (255, 0, 0)
 
             difficulty_text = self.font.render(f'{difficulty} Difficulty', True, difficulty_color)
             text_width, text_height = difficulty_text.get_size()
-            x_position = (screen_width - text_width) // 2  # Calculate the x position to center the text
+            x_position = (screen_width - text_width) // 2
             self.screen.blit(difficulty_text, (x_position, y_start + 5))
 
         pygame.display.flip()
