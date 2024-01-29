@@ -40,7 +40,7 @@ class Main:
         self.current_screen_width, self.current_screen_height = self.screen.get_size()
 
         self.player_hit = False
-        self.player_hit_animation_duration = 2000
+        self.player_hit_animation_duration = 1500
         self.player_hit_animation_start_time = 0
         self.player_visible = True
 
@@ -189,7 +189,7 @@ class Main:
         self.last_bullet_time = pygame.time.get_ticks()
         self.player_hit = False
         self.player_hit_animation_start_time = 0
-        self.player_hit_duration = 2000
+        self.player_hit_duration = 1500
 
         while self.game_state == "playing":
             current_time = pygame.time.get_ticks()
@@ -213,15 +213,14 @@ class Main:
             if not self.player_hit:
                 self.update_score()
 
-            if self.check_collisions() and not self.player_hit:
-                self.player_hit = True
-                self.player_hit_animation_start_time = current_time
-                self.player_visible = False
-
             if self.player_hit:
                 self.handle_player_hit_animation()
                 if current_time - self.player_hit_animation_start_time >= self.player_hit_duration:
                     self.game_state = "game_over"
+            elif self.check_collisions():
+                self.player_hit = True
+                self.player_hit_animation_start_time = current_time
+                self.player_visible = False
 
             if self.player_visible:
                 pygame.draw.rect(self.screen, WHITE, self.spaceship)
@@ -393,10 +392,19 @@ class Main:
             elapsed_time = current_time - self.player_hit_animation_start_time
 
             if elapsed_time < self.player_hit_animation_duration:
+                fire_colors = [(252, 186, 3), (255, 69, 0), (255, 0, 0)]
+
                 for _ in range(5):
-                    particle = PlayerExplosionParticle(self.spaceship.centerx, self.spaceship.centery,
-                                                       random.uniform(-2, 2), random.uniform(-2, 2),
-                                                       5, WHITE, gravity=0.1)
+                    particle_color = random.choice(fire_colors)
+                    particle = PlayerExplosionParticle(
+                        self.spaceship.centerx,
+                        self.spaceship.centery,
+                        random.uniform(-2, 2),
+                        random.uniform(-2, 2),
+                        5,
+                        particle_color,
+                        gravity=0.1
+                    )
                     self.particle_group.add(particle)
 
                 self.particle_group.update()
@@ -406,9 +414,6 @@ class Main:
                 self.player_hit = False
                 self.player_visible = True
                 self.particle_group.empty()
-
-        if not self.player_hit and self.player_visible:
-            pygame.draw.rect(self.screen, WHITE, self.spaceship)
 
     def redraw_screen(self):
         self.screen.fill(BLACK)
